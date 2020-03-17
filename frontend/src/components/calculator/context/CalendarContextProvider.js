@@ -18,7 +18,6 @@ class CalculatorContextProvider extends Component {
             <CalculatorContext.Provider value={{
                 travelPeriods: this.state.travelPeriods,
                 addNewPeriod: travelPeriod => {
-                    console.log(travelPeriod);
                     this.setState({travelPeriods: [...this.state.travelPeriods, travelPeriod]});
                 }
             }}>

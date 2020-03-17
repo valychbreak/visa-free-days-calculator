@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CalculatorContext from "./context/CalculatorContext";
+import './TravelPeriodForm.css'
 
 class TravelPeriodFrom extends Component {
 
@@ -10,25 +11,13 @@ class TravelPeriodFrom extends Component {
             startDate: '', 
             endDate: '', 
             country: '', 
-            note: ''
+            note: '',
+            errors: {
+                travelPeriodError: []
+            }
         };
 
-        this.saveNewPeriod = (context, event) => {
-            console.log('Created new period');
-            event.preventDefault();
-    
-            const newTravelPeriod = {start: this.state.startDate, end: this.state.endDate, country: this.state.country, note: this.state.note}
-            
-            context.addNewPeriod(newTravelPeriod);
-            // this.setState(state => {
-            //     const periods = state.travelPeriods.concat(newTravelPeriod);
-    
-            //     return {travelPeriods: periods}
-            // });
-    
-            this.saveNewPeriod = this.saveNewPeriod.bind(this);
-            this.handlePeriodInputChange = this.handlePeriodInputChange.bind(this);
-        }
+        this.saveNewPeriod = this.saveNewPeriod.bind(this);
         this.handlePeriodInputChange = this.handlePeriodInputChange.bind(this);
     }
 
@@ -50,10 +39,47 @@ class TravelPeriodFrom extends Component {
                         <input type="text" onChange={this.handlePeriodInputChange} name="note" />
 
                         <button type="submit">Add</button>
+                        {this.state.errors.travelPeriodError.map((error, index) =>
+                            <div className="formError" key={index}>{error}</div>
+                        )}
                     </form>
                 )}
             </CalculatorContext.Consumer>
         )
+    }
+
+    saveNewPeriod(context, event) {
+        event.preventDefault();
+
+        const newTravelPeriod = {start: this.state.startDate, end: this.state.endDate, country: this.state.country, note: this.state.note}
+
+        if (this.validate(newTravelPeriod)) {
+            context.addNewPeriod(newTravelPeriod);
+        }
+    }
+
+    validate(travelPeriod) {
+        var errors = [];
+
+        if (this.isBlank(travelPeriod.start)) {
+            errors.push('Provide value for start date');
+        }
+
+        if (this.isBlank(travelPeriod.end)) {
+            errors.push('Provide value for end date');
+        }
+
+        if (this.isBlank(travelPeriod.country)) {
+            errors.push('Provide value for country');
+        }
+
+        this.setState({errors: {travelPeriodError: errors}});
+        
+        return errors.length === 0;
+    }
+
+    isBlank(str) {
+        return (!str || /^\s*$/.test(str));
     }
 
     handlePeriodInputChange(event) {
