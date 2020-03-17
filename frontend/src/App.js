@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Link, Switch, Route} from 'react-router-dom'
-import VisaFreeDateCalculator from './components/VisaFreeDateCalculator';
+import VisaFreeDateCalculator from './components/calculator/VisaFreeDateCalculator';
 import ReactMainPage from './components/ReactMainPage';
 
 function App() {
