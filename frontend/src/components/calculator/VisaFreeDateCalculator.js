@@ -37,13 +37,24 @@ class VisaFreeDateCalculator extends Component {
                         <TravelPeriodFrom />
                     </div>
                     
+                    <hr />
+                    
                     <CalculatorContext.Consumer>
                         {context => (
                             <div>
                                 <h3>Added periods</h3>
-                                <ul>
-                                {context.travelPeriods.map((period, index) => <li key={index}>{period.start} - {period.end}, {period.country}. Note: {period.note}</li>)}
-                                </ul>
+                                <table>
+                                    <tr>
+                                        <th>Travel Period</th>
+                                        <th>Country</th>
+                                        <th>Note</th>
+                                    </tr>
+                                    {context.travelPeriods.map((period, index) => (
+                                        <tr key={index}>
+                                            <td>{period.start} - {period.end}</td><td>{period.country}</td><td>{period.note}</td>
+                                        </tr>
+                                    ))}
+                                </table>
                             </div>
                         )}
                     </CalculatorContext.Consumer>
