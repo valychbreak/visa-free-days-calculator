@@ -1,4 +1,9 @@
+
 .formError {
     color: red;
+    display: block;
+}
+
+.hint {
     display: block;
 }

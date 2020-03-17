@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Moment from 'react-moment';
 
 class TraverlPeriodsList extends Component {
 
@@ -15,7 +16,9 @@ class TraverlPeriodsList extends Component {
                 <tbody>
                     {this.props.travelPeriods.map((period, index) => (
                         <tr key={index}>
-                            <td>{period.start} - {period.end}</td><td>{period.country}</td><td>{period.note}</td>
+                            <td><Moment date={period.start} format="DD-MM-YYYY"/> - <Moment date={period.end} format="DD-MM-YYYY"/></td>
+                            <td>{period.country}</td>
+                            <td>{period.note}</td>
                         </tr>
                     ))}
                 </tbody>

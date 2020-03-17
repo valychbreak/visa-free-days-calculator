@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CalculatorContext from "./context/CalculatorContext";
 import './TravelPeriodForm.css'
+import moment from "moment";
 
 class TravelPeriodFrom extends Component {
 
@@ -39,6 +40,7 @@ class TravelPeriodFrom extends Component {
                         <input type="text" onChange={this.handlePeriodInputChange} name="note" />
 
                         <button type="submit">Add</button>
+                        <small className="hint">Date format should be dd-mm-yyyy</small>
                         {this.state.errors.travelPeriodError.map((error, index) =>
                             <div className="formError" key={index}>{error}</div>
                         )}
@@ -51,11 +53,15 @@ class TravelPeriodFrom extends Component {
     saveNewPeriod(context, event) {
         event.preventDefault();
 
-        const newTravelPeriod = {start: this.state.startDate, end: this.state.endDate, country: this.state.country, note: this.state.note}
+        const newTravelPeriod = {start: this.toDate(this.state.startDate), end: this.toDate(this.state.endDate), country: this.state.country, note: this.state.note}
 
         if (this.validate(newTravelPeriod)) {
             context.addNewPeriod(newTravelPeriod);
         }
+    }
+
+    toDate(date) {
+        return moment(date, "DD-MM-YYYY", true);
     }
 
     validate(travelPeriod) {
@@ -65,8 +71,16 @@ class TravelPeriodFrom extends Component {
             errors.push('Provide value for start date');
         }
 
+        if (!travelPeriod.start.isValid()) {
+            errors.push('Incorrect format of Start date')
+        }
+
         if (this.isBlank(travelPeriod.end)) {
             errors.push('Provide value for end date');
+        }
+
+        if (!travelPeriod.end.isValid()) {
+            errors.push('Incorrect format of End date')
         }
 
         if (this.isBlank(travelPeriod.country)) {
@@ -79,7 +93,7 @@ class TravelPeriodFrom extends Component {
     }
 
     isBlank(str) {
-        return (!str || /^\s*$/.test(str));
+        return (!str);
     }
 
     handlePeriodInputChange(event) {
