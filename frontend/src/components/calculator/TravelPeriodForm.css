@@ -1,6 +1,6 @@
 
-.MuiTextField-root {
-    margin: 0 1em
+.MuiFormControl-root {
+    margin: 0 0em 0 1em;
 }
 
 .formError {

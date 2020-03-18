@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import CalculatorContext from "./context/CalculatorContext";
 import './TravelPeriodForm.css'
 import moment from "moment";
-import {Button, TextField, FormControl} from "@material-ui/core"
+import {Button, TextField, FormControl, InputLabel, Input, FormHelperText} from "@material-ui/core"
 
 class TravelPeriodFrom extends Component {
 
@@ -28,10 +28,29 @@ class TravelPeriodFrom extends Component {
             <CalculatorContext.Consumer>
                 {context => (
                     <form onSubmit={e => this.saveNewPeriod(context, e)}>
-                        <TextField id="startDate" name="startDate" onChange={this.handlePeriodInputChange} size="small" label="Start date" />
-                        <TextField id="endDate" name="endDate" onChange={this.handlePeriodInputChange} size="small" label="End date" />
-                        <TextField id="country" name="country" onChange={this.handlePeriodInputChange} size="small" label="Country" />
-                        <TextField id="note" name="note" onChange={this.handlePeriodInputChange} size="small" label="Note" />
+                        <FormControl error>
+                            <InputLabel htmlFor="startDate">Start date</InputLabel>
+                            <Input id="startDate" name="startDate" onChange={this.handlePeriodInputChange} />
+                            <FormHelperText id="startDateHelperText">Date format should be dd-mm-yyyy</FormHelperText>
+                        </FormControl>
+
+                        <FormControl>
+                            <InputLabel htmlFor="endDate">End date</InputLabel>
+                            <Input id="endDate" name="endDate" onChange={this.handlePeriodInputChange} />
+                            <FormHelperText id="endHelperText">Date format should be dd-mm-yyyy</FormHelperText>
+                        </FormControl>
+
+                        <FormControl>
+                            <InputLabel htmlFor="country">Country</InputLabel>
+                            <Input id="country" name="country" onChange={this.handlePeriodInputChange} />
+                            <FormHelperText id="countryHelperText">Provide value</FormHelperText>
+                        </FormControl>
+
+                        <FormControl>
+                            <InputLabel htmlFor="note">Note</InputLabel>
+                            <Input id="note" name="note" onChange={this.handlePeriodInputChange} />
+                            <FormHelperText id="noteHelperText">Provide value</FormHelperText>
+                        </FormControl>
 
                         <Button type="submit" color="primary" variant="contained">Add</Button>
                         <small className="hint">Date format should be dd-mm-yyyy</small>
@@ -47,8 +66,9 @@ class TravelPeriodFrom extends Component {
     saveNewPeriod(context, event) {
         event.preventDefault();
 
+        console.log(this.state);
         const newTravelPeriod = {start: this.toDate(this.state.startDate), end: this.toDate(this.state.endDate), country: this.state.country, note: this.state.note}
-
+        
         if (this.validate(newTravelPeriod)) {
             context.addNewPeriod(newTravelPeriod);
         }
@@ -95,6 +115,7 @@ class TravelPeriodFrom extends Component {
         const inputName = target.name;
         const inputValue = target.value;
 
+        console.log("Changed " + inputName + " to " + inputValue)
         this.setState({[inputName]: inputValue});
     }
 }
