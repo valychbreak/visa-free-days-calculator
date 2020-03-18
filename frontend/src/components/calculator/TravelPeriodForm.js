@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CalculatorContext from "./context/CalculatorContext";
 import './TravelPeriodForm.css'
 import moment from "moment";
+import {Button, TextField, FormControl} from "@material-ui/core"
 
 class TravelPeriodFrom extends Component {
 
@@ -27,19 +28,12 @@ class TravelPeriodFrom extends Component {
             <CalculatorContext.Consumer>
                 {context => (
                     <form onSubmit={e => this.saveNewPeriod(context, e)}>
-                        <label>Start</label>
-                        <input type="text" onChange={this.handlePeriodInputChange} name="startDate" />
+                        <TextField id="startDate" name="startDate" onChange={this.handlePeriodInputChange} size="small" label="Start date" />
+                        <TextField id="endDate" name="endDate" onChange={this.handlePeriodInputChange} size="small" label="End date" />
+                        <TextField id="country" name="country" onChange={this.handlePeriodInputChange} size="small" label="Country" />
+                        <TextField id="note" name="note" onChange={this.handlePeriodInputChange} size="small" label="Note" />
 
-                        <label>End</label>
-                        <input type="text" onChange={this.handlePeriodInputChange} name="endDate" />
-
-                        <label>Country</label>
-                        <input type="text" onChange={this.handlePeriodInputChange} name="country" />
-
-                        <label>Note</label>
-                        <input type="text" onChange={this.handlePeriodInputChange} name="note" />
-
-                        <button type="submit">Add</button>
+                        <Button type="submit" color="primary" variant="contained">Add</Button>
                         <small className="hint">Date format should be dd-mm-yyyy</small>
                         {this.state.errors.travelPeriodError.map((error, index) =>
                             <div className="formError" key={index}>{error}</div>

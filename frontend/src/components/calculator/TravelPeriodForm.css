@@ -1,4 +1,8 @@
 
+.MuiTextField-root {
+    margin: 0 1em
+}
+
 .formError {
     color: red;
     display: block;
