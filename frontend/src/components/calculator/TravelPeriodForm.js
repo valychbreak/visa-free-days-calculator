@@ -15,7 +15,8 @@ class TravelPeriodFrom extends Component {
             country: '', 
             note: '',
             errors: {
-                travelPeriodError: []
+                travelPeriodError: [],
+                startDate: ''
             }
         };
 
@@ -28,10 +29,10 @@ class TravelPeriodFrom extends Component {
             <CalculatorContext.Consumer>
                 {context => (
                     <form onSubmit={e => this.saveNewPeriod(context, e)}>
-                        <FormControl error>
+                        <FormControl error={!!this.state.errors.startDate}>
                             <InputLabel htmlFor="startDate">Start date</InputLabel>
                             <Input id="startDate" name="startDate" onChange={this.handlePeriodInputChange} />
-                            <FormHelperText id="startDateHelperText">Date format should be dd-mm-yyyy</FormHelperText>
+                            <FormHelperText id="startDateHelperText">{this.state.errors.startDate}</FormHelperText>
                         </FormControl>
 
                         <FormControl>
@@ -53,9 +54,9 @@ class TravelPeriodFrom extends Component {
                         </FormControl>
 
                         <Button type="submit" color="primary" variant="contained">Add</Button>
-                        <small className="hint">Date format should be dd-mm-yyyy</small>
+
                         {this.state.errors.travelPeriodError.map((error, index) =>
-                            <div className="formError" key={index}>{error}</div>
+                            <FormHelperText key={index} error>{error}</FormHelperText>
                         )}
                     </form>
                 )}
@@ -66,7 +67,6 @@ class TravelPeriodFrom extends Component {
     saveNewPeriod(context, event) {
         event.preventDefault();
 
-        console.log(this.state);
         const newTravelPeriod = {start: this.toDate(this.state.startDate), end: this.toDate(this.state.endDate), country: this.state.country, note: this.state.note}
         
         if (this.validate(newTravelPeriod)) {
@@ -80,13 +80,10 @@ class TravelPeriodFrom extends Component {
 
     validate(travelPeriod) {
         var errors = [];
-
-        if (this.isBlank(travelPeriod.start)) {
-            errors.push('Provide value for start date');
-        }
+        var fieldErrors = {startDate: ''}
 
         if (!travelPeriod.start.isValid()) {
-            errors.push('Incorrect format of Start date')
+            fieldErrors.startDate = 'Date format should be dd-mm-yyyy';
         }
 
         if (this.isBlank(travelPeriod.end)) {
@@ -101,9 +98,9 @@ class TravelPeriodFrom extends Component {
             errors.push('Provide value for country');
         }
 
-        this.setState({errors: {travelPeriodError: errors}});
+        this.setState({errors: {travelPeriodError: errors, startDate: fieldErrors.startDate}});
         
-        return errors.length === 0;
+        return errors.length === 0 && !fieldErrors.startDate;
     }
 
     isBlank(str) {
@@ -115,7 +112,6 @@ class TravelPeriodFrom extends Component {
         const inputName = target.name;
         const inputValue = target.value;
 
-        console.log("Changed " + inputName + " to " + inputValue)
         this.setState({[inputName]: inputValue});
     }
 }
