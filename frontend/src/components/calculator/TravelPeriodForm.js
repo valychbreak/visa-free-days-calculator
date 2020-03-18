@@ -2,23 +2,26 @@ import React, { Component } from "react";
 import CalculatorContext from "./context/CalculatorContext";
 import './TravelPeriodForm.css'
 import moment from "moment";
-import {Button, TextField, FormControl, InputLabel, Input, FormHelperText} from "@material-ui/core"
+import {Button, FormControl, InputLabel, Input, FormHelperText} from "@material-ui/core"
+
+const DEFAULT_STATE = {
+    startDate: '', 
+    endDate: '', 
+    country: '', 
+    note: '',
+    errors: {
+        startDate: '',
+        endDate: '',
+        country: ''
+    }
+}
 
 class TravelPeriodFrom extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            startDate: '', 
-            endDate: '', 
-            country: '', 
-            note: '',
-            errors: {
-                travelPeriodError: [],
-                startDate: ''
-            }
-        };
+        this.state = DEFAULT_STATE;
 
         this.saveNewPeriod = this.saveNewPeriod.bind(this);
         this.handlePeriodInputChange = this.handlePeriodInputChange.bind(this);
@@ -29,35 +32,30 @@ class TravelPeriodFrom extends Component {
             <CalculatorContext.Consumer>
                 {context => (
                     <form onSubmit={e => this.saveNewPeriod(context, e)}>
-                        <FormControl error={!!this.state.errors.startDate}>
+                        <FormControl required error={!!this.state.errors.startDate}>
                             <InputLabel htmlFor="startDate">Start date</InputLabel>
-                            <Input id="startDate" name="startDate" onChange={this.handlePeriodInputChange} />
+                            <Input id="startDate" name="startDate" value={this.state.startDate} onChange={this.handlePeriodInputChange} />
                             <FormHelperText id="startDateHelperText">{this.state.errors.startDate}</FormHelperText>
                         </FormControl>
 
-                        <FormControl>
+                        <FormControl required error={!!this.state.errors.endDate}>
                             <InputLabel htmlFor="endDate">End date</InputLabel>
-                            <Input id="endDate" name="endDate" onChange={this.handlePeriodInputChange} />
-                            <FormHelperText id="endHelperText">Date format should be dd-mm-yyyy</FormHelperText>
+                            <Input id="endDate" name="endDate" value={this.state.endDate} onChange={this.handlePeriodInputChange} />
+                            <FormHelperText id="endHelperText">{this.state.errors.endDate}</FormHelperText>
                         </FormControl>
 
-                        <FormControl>
+                        <FormControl required error={!!this.state.errors.country}>
                             <InputLabel htmlFor="country">Country</InputLabel>
-                            <Input id="country" name="country" onChange={this.handlePeriodInputChange} />
-                            <FormHelperText id="countryHelperText">Provide value</FormHelperText>
+                            <Input id="country" name="country" value={this.state.country} onChange={this.handlePeriodInputChange} />
+                            <FormHelperText id="countryHelperText">{this.state.errors.country}</FormHelperText>
                         </FormControl>
 
                         <FormControl>
                             <InputLabel htmlFor="note">Note</InputLabel>
-                            <Input id="note" name="note" onChange={this.handlePeriodInputChange} />
-                            <FormHelperText id="noteHelperText">Provide value</FormHelperText>
+                            <Input id="note" name="note" value={this.state.note} onChange={this.handlePeriodInputChange} />
                         </FormControl>
 
                         <Button type="submit" color="primary" variant="contained">Add</Button>
-
-                        {this.state.errors.travelPeriodError.map((error, index) =>
-                            <FormHelperText key={index} error>{error}</FormHelperText>
-                        )}
                     </form>
                 )}
             </CalculatorContext.Consumer>
@@ -71,6 +69,7 @@ class TravelPeriodFrom extends Component {
         
         if (this.validate(newTravelPeriod)) {
             context.addNewPeriod(newTravelPeriod);
+            this.setState(DEFAULT_STATE);
         }
     }
 
@@ -79,28 +78,23 @@ class TravelPeriodFrom extends Component {
     }
 
     validate(travelPeriod) {
-        var errors = [];
-        var fieldErrors = {startDate: ''}
+        var fieldErrors = {startDate: '', endDate: '', country: ''}
 
         if (!travelPeriod.start.isValid()) {
             fieldErrors.startDate = 'Date format should be dd-mm-yyyy';
         }
 
-        if (this.isBlank(travelPeriod.end)) {
-            errors.push('Provide value for end date');
-        }
-
         if (!travelPeriod.end.isValid()) {
-            errors.push('Incorrect format of End date')
+            fieldErrors.endDate = 'Date format should be dd-mm-yyyy';
         }
 
         if (this.isBlank(travelPeriod.country)) {
-            errors.push('Provide value for country');
+            fieldErrors.country = 'Provide value for country'
         }
 
-        this.setState({errors: {travelPeriodError: errors, startDate: fieldErrors.startDate}});
+        this.setState({errors: fieldErrors});
         
-        return errors.length === 0 && !fieldErrors.startDate;
+        return !fieldErrors.startDate && !fieldErrors.endDate && !fieldErrors.country;
     }
 
     isBlank(str) {
