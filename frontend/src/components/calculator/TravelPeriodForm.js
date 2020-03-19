@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import CalculatorContext from "./context/CalculatorContext";
 import './TravelPeriodForm.css'
 import moment from "moment";
-import {Button, FormControl, InputLabel, Input, FormHelperText} from "@material-ui/core"
+import {Button, FormControl, InputLabel, Input, FormHelperText, Box, Grid} from "@material-ui/core"
+import { spacing } from '@material-ui/system';
 
 const DEFAULT_STATE = {
     startDate: '', 
@@ -32,30 +33,40 @@ class TravelPeriodFrom extends Component {
             <CalculatorContext.Consumer>
                 {context => (
                     <form onSubmit={e => this.saveNewPeriod(context, e)}>
-                        <FormControl required error={!!this.state.errors.startDate}>
-                            <InputLabel htmlFor="startDate">Start date</InputLabel>
-                            <Input id="startDate" name="startDate" value={this.state.startDate} onChange={this.handlePeriodInputChange} />
-                            <FormHelperText id="startDateHelperText">{this.state.errors.startDate}</FormHelperText>
-                        </FormControl>
+                        <Grid container spacing={1}>
+                            <Grid item xs={6}>
+                                <FormControl required error={!!this.state.errors.startDate} fullWidth >
+                                    <InputLabel htmlFor="startDate">Start date</InputLabel>
+                                    <Input id="startDate" name="startDate" value={this.state.startDate} onChange={this.handlePeriodInputChange} />
+                                    <FormHelperText id="startDateHelperText">{this.state.errors.startDate}</FormHelperText>
+                                </FormControl>
+                            </Grid>
 
-                        <FormControl required error={!!this.state.errors.endDate}>
-                            <InputLabel htmlFor="endDate">End date</InputLabel>
-                            <Input id="endDate" name="endDate" value={this.state.endDate} onChange={this.handlePeriodInputChange} />
-                            <FormHelperText id="endHelperText">{this.state.errors.endDate}</FormHelperText>
-                        </FormControl>
+                            <Grid item xs={6}>
+                                <FormControl required error={!!this.state.errors.endDate} fullWidth > 
+                                    <InputLabel htmlFor="endDate">End date</InputLabel>
+                                    <Input id="endDate" name="endDate" value={this.state.endDate} onChange={this.handlePeriodInputChange} />
+                                    <FormHelperText id="endHelperText">{this.state.errors.endDate}</FormHelperText>
+                                </FormControl>
+                            </Grid>
 
-                        <FormControl required error={!!this.state.errors.country}>
-                            <InputLabel htmlFor="country">Country</InputLabel>
-                            <Input id="country" name="country" value={this.state.country} onChange={this.handlePeriodInputChange} />
-                            <FormHelperText id="countryHelperText">{this.state.errors.country}</FormHelperText>
-                        </FormControl>
+                            <Grid item xs={6}>
+                                <FormControl required error={!!this.state.errors.country} fullWidth >
+                                    <InputLabel htmlFor="country">Country</InputLabel>
+                                    <Input id="country" name="country" value={this.state.country} onChange={this.handlePeriodInputChange} />
+                                    <FormHelperText id="countryHelperText">{this.state.errors.country}</FormHelperText>
+                                </FormControl>
+                            </Grid>
 
-                        <FormControl>
-                            <InputLabel htmlFor="note">Note</InputLabel>
-                            <Input id="note" name="note" value={this.state.note} onChange={this.handlePeriodInputChange} />
-                        </FormControl>
+                            <Grid item xs={6}>
+                                <FormControl fullWidth >
+                                    <InputLabel htmlFor="note">Note</InputLabel>
+                                    <Input id="note" name="note" value={this.state.note} onChange={this.handlePeriodInputChange} />
+                                </FormControl>
+                            </Grid>
 
-                        <Button type="submit" color="primary" variant="contained">Add</Button>
+                            <Button type="submit" color="primary" variant="contained" fullWidth>Add</Button>
+                        </Grid>
                     </form>
                 )}
             </CalculatorContext.Consumer>

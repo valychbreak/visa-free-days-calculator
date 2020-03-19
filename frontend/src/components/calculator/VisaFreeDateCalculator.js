@@ -5,6 +5,8 @@ import TravelPeriodFrom from './TravelPeriodForm';
 import CalculatorContextProvider from './context/CalendarContextProvider';
 import CalculatorContext from './context/CalculatorContext';
 import TraverlPeriodsList from './TravelPeriodsList';
+import { Box, Paper } from '@material-ui/core';
+import './VisaFreeDateCalculator.css'
 
 class VisaFreeDateCalculator extends Component {
 
@@ -30,22 +32,30 @@ class VisaFreeDateCalculator extends Component {
     render() {
         return (
             <CalculatorContextProvider>
-                <div>
+                <div style={{
+                    width: 700,
+                    margin: 'auto'
+                }}>
                     <h2>Calculator</h2>
                     
-                    <h3>New period</h3>
-                    <TravelPeriodFrom />
-                    
-                    <hr />
-
-                    <CalculatorContext.Consumer>
-                        {context => (
-                            <div>
-                                <h3>Added periods</h3>
-                                <TraverlPeriodsList travelPeriods={context.travelPeriods} />
-                            </div>
-                        )}
-                    </CalculatorContext.Consumer>
+                    <Box m="auto">
+                        <h3>New period</h3>
+                        <Paper elevation={3}>
+                            <TravelPeriodFrom />
+                        </Paper>
+                    </Box>
+                    <Box m="auto">
+                        <h3>Added periods</h3>
+                        <Paper>
+                            <CalculatorContext.Consumer>
+                                {context => (
+                                    <div>
+                                        <TraverlPeriodsList travelPeriods={context.travelPeriods} />
+                                    </div>
+                                )}
+                            </CalculatorContext.Consumer>
+                        </Paper>
+                    </Box>
                 </div>
             </CalculatorContextProvider>
         )
