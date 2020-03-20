@@ -1,10 +1,13 @@
 package com.valychbreak.calculator.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
+@JsonDeserialize(builder = TravelPeriod.TravelPeriodBuilder.class)
 @Getter
 public class TravelPeriod {
     private Long id;
@@ -20,5 +23,10 @@ public class TravelPeriod {
         this.end = end;
         this.country = country;
         this.note = note;
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static final class TravelPeriodBuilder {
+
     }
 }
