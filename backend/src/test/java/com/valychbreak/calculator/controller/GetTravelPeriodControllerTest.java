@@ -7,7 +7,6 @@ import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.annotation.MicronautTest;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import javax.inject.Inject;
 
@@ -26,6 +25,6 @@ class GetTravelPeriodControllerTest {
 
         String response = client.toBlocking().retrieve(httpRequest);
 
-        assertEquals("[{\"start\":[2020,3,11],\"end\":[2020,3,15],\"country\":\"Poland\",\"note\":\"Some note\"}]", response, true);
+        assertEquals("[{\"id\": 1,\"start\":[2020,3,11],\"end\":[2020,3,15],\"country\":\"Poland\",\"note\":\"Some note\"}]", response, true);
     }
 }

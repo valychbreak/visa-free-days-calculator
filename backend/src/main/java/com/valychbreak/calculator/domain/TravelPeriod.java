@@ -7,13 +7,15 @@ import java.time.LocalDate;
 
 @Getter
 public class TravelPeriod {
+    private Long id;
     private LocalDate start;
     private LocalDate end;
     private String country;
     private String note;
 
     @Builder
-    private TravelPeriod(LocalDate start, LocalDate end, String country, String note) {
+    private TravelPeriod(Long id, LocalDate start, LocalDate end, String country, String note) {
+        this.id = id;
         this.start = start;
         this.end = end;
         this.country = country;
