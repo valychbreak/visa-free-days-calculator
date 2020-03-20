@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @JsonDeserialize(builder = TravelPeriod.TravelPeriodBuilder.class)
 @Getter
+@Setter
 public class TravelPeriod {
     private Long id;
     private LocalDate start;
