@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import CalculatorContext from "./context/CalculatorContext";
 import './TravelPeriodForm.css'
 import moment from "moment";
-import {Button, FormControl, InputLabel, Input, FormHelperText, Box, Grid} from "@material-ui/core"
-import { spacing } from '@material-ui/system';
+import {Button, FormControl, InputLabel, Input, FormHelperText, Grid} from "@material-ui/core"
+
 
 const DEFAULT_STATE = {
     startDate: '', 

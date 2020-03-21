@@ -1,5 +1,3 @@
-
-import Axios from 'axios';
 import React, { Component } from 'react';
 import TravelPeriodFrom from './TravelPeriodForm';
 import CalculatorContextProvider from './context/CalendarContextProvider';
@@ -20,13 +18,7 @@ class VisaFreeDateCalculator extends Component {
     }
 
     componentDidMount() {
-        Axios.get('http://localhost:8080/api/period/all')
-            .then(res => {
-                this.setState({travelPeriods: res.data, failed: false})
-            })
-            .catch(err => {
-                this.setState({travelPeriods: [], failed: true})
-            })
+
     }
 
     render() {
