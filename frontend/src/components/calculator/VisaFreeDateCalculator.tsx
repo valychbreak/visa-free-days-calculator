@@ -32,7 +32,7 @@ class VisaFreeDateCalculator extends Component {
                         <Paper>
                             <CalculatorContext.Consumer>
                                 {context => (
-                                    <TraverlPeriodsList travelPeriods={context.travelPeriods} />
+                                    <TraverlPeriodsList travelPeriods={context.travelPeriods} onTravelPeriodDelete={context.deleteTravelPeriod} />
                                 )}
                             </CalculatorContext.Consumer>
                         </Paper>

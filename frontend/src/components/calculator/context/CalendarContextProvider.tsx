@@ -42,9 +42,19 @@ class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
                     params.append('country', travelPeriod.country);
                     params.append('note', travelPeriod.note);
 
-                    this.setState({travelPeriods: [...this.state.travelPeriods, travelPeriod]});
-
-                    return Axios.post("http://localhost:8080/api/period/add", params, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+                    return Axios.post("http://localhost:8080/api/period/add", params, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                        .then(response => {
+                            const createTravelPeriod = response.data as TravelPeriod;
+                            this.setState({travelPeriods: [...this.state.travelPeriods, createTravelPeriod]});
+                            return createTravelPeriod;
+                        });
+                },
+                deleteTravelPeriod: (travelPeriod: TravelPeriod) => {
+                    Axios.delete('http://localhost:8080/api/period/' + travelPeriod.id + '/delete')
+                        .then(reponse => {
+                            const newTravelPeriods = this.state.travelPeriods.filter(existingTravelPeriod => existingTravelPeriod.id !== travelPeriod.id);
+                            this.setState({travelPeriods: [...newTravelPeriods]});
+                        });
                 }
             }}>
                 {this.props.children}
