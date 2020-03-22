@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class TravelPeriodRepository {
@@ -34,6 +35,17 @@ public class TravelPeriodRepository {
         travelPeriod.setId(nextId++);
         travelPeriods.add(travelPeriod);
 
+        return travelPeriod;
+    }
+
+    public Optional<TravelPeriod> findById(Long id) {
+        return travelPeriods.stream()
+                .filter(travelPeriod -> id.equals(travelPeriod.getId()))
+                .findFirst();
+    }
+
+    public TravelPeriod delete(TravelPeriod travelPeriod) {
+        travelPeriods.remove(travelPeriod);
         return travelPeriod;
     }
 }
