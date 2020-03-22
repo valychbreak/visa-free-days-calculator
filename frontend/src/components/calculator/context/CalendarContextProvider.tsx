@@ -35,7 +35,7 @@ class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
         )
     }
 
-    private async addTravelPeriod(travelPeriod: TravelPeriod) {
+    private addTravelPeriod(travelPeriod: TravelPeriod) {
         const params = new URLSearchParams();
         params.append('start', travelPeriod.start.format('YYYY-MM-DD'));
         params.append('end', travelPeriod.end.format('YYYY-MM-DD'));
@@ -46,11 +46,11 @@ class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
 
-        const response = await Axios.post("http://localhost:8080/api/period/add", params, config);
-        if (response === undefined) { throw new Error("test")}
-        const createTravelPeriod = (response.data as TravelPeriod);
-        this.setState({ travelPeriods: [...this.state.travelPeriods, createTravelPeriod] });
-        return createTravelPeriod;
+        return Axios.post("http://localhost:8080/api/period/add", params, config).then(response => {
+            const createTravelPeriod = (response.data as TravelPeriod);
+            this.setState({ travelPeriods: [...this.state.travelPeriods, createTravelPeriod] });
+            return createTravelPeriod;
+        });
     }
 
     private deleteTravelPeriod(travelPeriod: TravelPeriod) {
