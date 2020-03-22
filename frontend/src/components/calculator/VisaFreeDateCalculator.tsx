@@ -8,15 +8,6 @@ import './VisaFreeDateCalculator.css'
 
 class VisaFreeDateCalculator extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            travelPeriods: [],
-            failed: false,
-        };
-    }
-
     componentDidMount() {
 
     }

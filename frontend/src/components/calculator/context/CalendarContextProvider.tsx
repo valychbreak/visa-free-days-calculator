@@ -1,17 +1,23 @@
 import React, { Component } from "react";
-import CalculatorContext from "./CalculatorContext";
 import Axios from "axios";
+import TravelPeriod from "../../../common/TravelPeriod";
+import CalculatorContext from "./CalculatorContext";
 
-const DEFAULT_STATE = {
-    travelPeriods: []
+type CalculatorProviderState = {
+    travelPeriods: TravelPeriod[],
+    failed: boolean
 }
 
-class CalculatorContextProvider extends Component {
-    
-    constructor(props) {
-        super(props);
+class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
+    static DEFAULT_STATE: CalculatorProviderState = {
+        travelPeriods: [],
+        failed: false
+    }
 
-        this.state = DEFAULT_STATE;
+    constructor(props: any) {
+        super(props);
+        
+        this.state = CalculatorContextProvider.DEFAULT_STATE;
     }
 
     componentDidMount() {
@@ -28,7 +34,7 @@ class CalculatorContextProvider extends Component {
         return (
             <CalculatorContext.Provider value={{
                 travelPeriods: this.state.travelPeriods,
-                addNewPeriod: travelPeriod => {
+                addNewPeriod: (travelPeriod: TravelPeriod) => {
 
                     const params = new URLSearchParams();
                     params.append('start', travelPeriod.start.format('YYYY-MM-DD'));
@@ -36,8 +42,9 @@ class CalculatorContextProvider extends Component {
                     params.append('country', travelPeriod.country);
                     params.append('note', travelPeriod.note);
 
-                    Axios.post("http://localhost:8080/api/period/add", params, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
                     this.setState({travelPeriods: [...this.state.travelPeriods, travelPeriod]});
+
+                    return Axios.post("http://localhost:8080/api/period/add", params, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
                 }
             }}>
                 {this.props.children}

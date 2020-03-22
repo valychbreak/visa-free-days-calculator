@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import Moment from 'react-moment';
 import { TableContainer, Table, TableRow, TableCell, TableHead, TableBody } from '@material-ui/core';
+import TravelPeriod from '../../common/TravelPeriod';
 
-class TraverlPeriodsList extends Component {
+type TravelPeriodListProps = {
+    travelPeriods: TravelPeriod[];
+}
+
+class TraverlPeriodsList extends Component<TravelPeriodListProps> {
 
     render() {
         return (

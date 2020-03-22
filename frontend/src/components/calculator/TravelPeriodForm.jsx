@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CalculatorContext from "./context/CalculatorContext";
+import CalculatorContext from "./context/CalculatorContext.tsx";
 import './TravelPeriodForm.css'
 import moment from "moment";
 import {Button, FormControl, InputLabel, Input, FormHelperText, Grid} from "@material-ui/core"
