@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import Axios from "axios";
 import TravelPeriod from "../../../common/TravelPeriod";
 import CalculatorContext from "./CalculatorContext";
+import { withSnackbar, WithSnackbarProps } from "notistack";
 
 type CalculatorProviderState = {
     travelPeriods: TravelPeriod[],
     failed: boolean
 }
 
-class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
+class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorProviderState> {
     static DEFAULT_STATE: CalculatorProviderState = {
         travelPeriods: [],
         failed: false
@@ -35,7 +36,7 @@ class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
         )
     }
 
-    private async addTravelPeriod(travelPeriod: TravelPeriod) {
+    private addTravelPeriod(travelPeriod: TravelPeriod) {
         const params = new URLSearchParams();
         params.append('start', travelPeriod.start.format('YYYY-MM-DD'));
         params.append('end', travelPeriod.end.format('YYYY-MM-DD'));
@@ -46,11 +47,17 @@ class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
 
-        const response = await Axios.post("http://localhost:8080/api/period/add", params, config);
-        if (response === undefined) { throw new Error("test")}
-        const createTravelPeriod = (response.data as TravelPeriod);
-        this.setState({ travelPeriods: [...this.state.travelPeriods, createTravelPeriod] });
-        return createTravelPeriod;
+        return Axios.post("http://localhost:8080/api/period/add", params, config)
+            .then(response => {
+                const createTravelPeriod = (response.data as TravelPeriod);
+                this.setState({ travelPeriods: [...this.state.travelPeriods, createTravelPeriod] });
+
+                this.props.enqueueSnackbar('Created new travel period', {variant: 'success'});
+                return createTravelPeriod;
+            }).catch(error => {
+                this.props.enqueueSnackbar('Failed to add new travel period. ' + error, {variant: 'error'});
+                return error;
+            });
     }
 
     private deleteTravelPeriod(travelPeriod: TravelPeriod) {
@@ -58,6 +65,10 @@ class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
             .then(reponse => {
                 const newTravelPeriods = this.state.travelPeriods.filter(existingTravelPeriod => existingTravelPeriod.id !== travelPeriod.id);
                 this.setState({travelPeriods: [...newTravelPeriods]});
+
+                this.props.enqueueSnackbar('Travel period was removed');
+            }).catch(error => {
+                this.props.enqueueSnackbar('Failed to delete travel period. ' + error, {variant: 'error'});
             });
     }
 
@@ -68,9 +79,9 @@ class CalculatorContextProvider extends Component<{}, CalculatorProviderState> {
             })
             .catch(err => {
                 this.setState({ travelPeriods: [], failed: true });
-                throw err;
+                this.props.enqueueSnackbar('Failed to fetch travel periods. ' + err, {variant: 'error'});
             });
     }
 }
 
-export default CalculatorContextProvider;
+export default withSnackbar(CalculatorContextProvider);
