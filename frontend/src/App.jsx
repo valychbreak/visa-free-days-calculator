@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import VisaFreeDateCalculator from './components/calculator/VisaFreeDateCalculator';
 import ReactMainPage from './components/ReactMainPage';
-import { StylesProvider } from '@material-ui/core';
+import { StylesProvider, Container, Box } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import Header from './components/Header';
 
@@ -12,14 +12,16 @@ function App() {
     <StylesProvider injectFirst>
       <SnackbarProvider>
         <Router>
-          <div className="main">
             <Header />
-
-            <Switch>
-              <Route exact path='/' component={ReactMainPage} />
-              <Route path='/calculator' component={VisaFreeDateCalculator} />
-            </Switch>
-          </div>
+            <Container>
+              <Box>
+                <Switch>
+                  <Route exact path='/' component={ReactMainPage} />
+                  <Route path='/calculator' component={VisaFreeDateCalculator} />
+                </Switch>
+              </Box>
+            </Container>
+            
         </Router>
       </SnackbarProvider>
     </StylesProvider>

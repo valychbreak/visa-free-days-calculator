@@ -27,7 +27,7 @@ class Header extends Component<{}, HeaderState> {
     render() {
         return (
             <div>
-                <AppBar>
+                <AppBar position="fixed">
                     <Toolbar>
                         <IconButton onClick={() => this.toggleDrawer()}>
                             <MenuIcon fontSize="large" />
@@ -35,6 +35,7 @@ class Header extends Component<{}, HeaderState> {
                         <Typography variant="h5" color="inherit">Visa calculator</Typography>
                     </Toolbar>
                 </AppBar>
+                <Toolbar />
                 <Drawer anchor="left" variant="temporary" open={this.state.drawerOpen} onClose={()=>this.toggleDrawer(false)}>
                     <List className="sidebar" >
                         <ListItem>
