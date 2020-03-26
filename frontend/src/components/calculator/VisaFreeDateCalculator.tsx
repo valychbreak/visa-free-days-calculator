@@ -23,13 +23,13 @@ class VisaFreeDateCalculator extends Component {
                     
                     <Box m="auto">
                         <h3>New period</h3>
-                        <Paper elevation={3}>
+                        <Paper className="block">
                             <TravelPeriodFrom />
                         </Paper>
                     </Box>
                     <Box m="auto">
                         <h3>Added periods</h3>
-                        <Paper>
+                        <Paper className="block">
                             <CalculatorContext.Consumer>
                                 {context => (
                                     <TraverlPeriodsList travelPeriods={context.travelPeriods} onTravelPeriodDelete={context.deleteTravelPeriod} />

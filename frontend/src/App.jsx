@@ -1,9 +1,10 @@
 import React from 'react';
-import {BrowserRouter as Router, Link, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import VisaFreeDateCalculator from './components/calculator/VisaFreeDateCalculator';
 import ReactMainPage from './components/ReactMainPage';
 import { StylesProvider } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
+import Header from './components/Header';
 
 function App() {
   return (
@@ -12,12 +13,7 @@ function App() {
       <SnackbarProvider>
         <Router>
           <div className="main">
-            <header className="header">
-              <ul className='nav-bar'>
-                <li><Link to={'/'} className='nav-link'>Main Page</Link></li>
-                <li><Link to={'/calculator'} className='nav-link'>Visa-Free Days Calculator</Link></li>
-              </ul>
-            </header>
+            <Header />
 
             <Switch>
               <Route exact path='/' component={ReactMainPage} />
