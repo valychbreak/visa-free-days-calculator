@@ -6,10 +6,12 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import java.util.Collection;
 
 @Controller("/api")
+@PermitAll
 public class GetTravelPeriodController {
 
     private final TravelPeriodRepository travelPeriodRepository;

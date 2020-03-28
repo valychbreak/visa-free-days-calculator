@@ -19,4 +19,6 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: ivTZV0GQhd7ctDR82zSYsSK3H1puPIKgPvMfuYk7XB6gdAj0sLihMi8CMTixtR6Lp7ZLu5VKaNiNNb1OAeZq1mVdGj7dIRLB_SKdTUmBjAwrdp4xVnV2ed_a9WXJ36GwoK0Mv1HRESaw_DAMFWEUkI2hHQOHPBXfVa7PZj-VDVcdRqPQKKlCnYzyrik6AIiac3kKIEtDqFE_qjqWCFHbSbrpavYFkvUDAxRcGt8iMwS08_9P4Ng4RCE3_G4W0mlnhydRAhD4U9IdISSbp4CkS7FA3QrbS1iC39wCwuZDUmj_qkC80MRRrvmaS3fIxFkv2TEXI-bMj9ehsK7YZpaoNQ
+              secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
+              base64: true
+              jws-algorithm: HS256

@@ -6,9 +6,11 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;
 
+import javax.annotation.security.PermitAll;
 import java.util.Optional;
 
 @Controller("/api")
+@PermitAll
 public class DeleteTravelPeriodController {
 
     private TravelPeriodRepository travelPeriodRepository;

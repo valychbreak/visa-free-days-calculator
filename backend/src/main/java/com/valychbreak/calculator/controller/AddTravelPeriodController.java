@@ -7,11 +7,13 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller("/api")
+@PermitAll
 public class AddTravelPeriodController {
 
     private final TravelPeriodRepository travelPeriodRepository;
