@@ -3,8 +3,7 @@ import TravelPeriodFrom from './TravelPeriodForm';
 import CalculatorContextProvider from './context/CalendarContextProvider';
 import CalculatorContext from './context/CalculatorContext';
 import TraverlPeriodsList from './TravelPeriodsList';
-import { Box, Paper, WithStyles, makeStyles, withStyles } from '@material-ui/core';
-import './VisaFreeDateCalculator.css'
+import { Box, Paper, WithStyles, withStyles } from '@material-ui/core';
 
 const useStyles = () => ({
     paper: { 
