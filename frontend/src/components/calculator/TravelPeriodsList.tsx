@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Moment from 'react-moment';
-import { TableContainer, Table, TableRow, TableCell, TableHead, TableBody, IconButton } from '@material-ui/core';
+import { TableContainer, Table, TableRow, TableCell, TableHead, TableBody, IconButton, Typography } from '@material-ui/core';
 import { Delete } from '@material-ui/icons'
 import TravelPeriod from '../../common/TravelPeriod';
 
@@ -12,6 +12,15 @@ type TravelPeriodListProps = {
 class TraverlPeriodsList extends Component<TravelPeriodListProps> {
 
     render() {
+        if (this.props.travelPeriods.length === 0) {
+            return (
+                <Typography>None created so far.</Typography>
+            )
+        }
+        return this.renderTravelPeriods();
+    }
+
+    renderTravelPeriods() {
         return (
             <TableContainer >
                 <Table>
