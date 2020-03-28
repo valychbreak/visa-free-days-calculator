@@ -9,6 +9,7 @@ import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -43,12 +44,13 @@ class CreateTemporaryUserControllerTest {
         assertThat(user.getId()).isNotNull();
     }
 
-//    @Test
-//    void shouldResponseWithAuthToken() {
-//        MutableHttpRequest<String> httpRequest = HttpRequest.GET("/user/temporary");
-//
-//        HttpResponse<String> response = client.toBlocking().exchange(httpRequest);
-//
-//        assertThat(response.getBody(String.class)).isPresent();
-//    }
+    @Test
+    @Disabled
+    void shouldResponseWithAuthToken() {
+        MutableHttpRequest<String> httpRequest = HttpRequest.GET("/user/temporary");
+
+        HttpResponse<String> response = client.toBlocking().exchange(httpRequest);
+
+        assertThat(response.getBody(String.class)).isPresent();
+    }
 }
