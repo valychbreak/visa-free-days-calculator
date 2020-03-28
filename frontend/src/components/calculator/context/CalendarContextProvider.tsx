@@ -56,7 +56,7 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
                 return createTravelPeriod;
             }).catch(error => {
                 this.props.enqueueSnackbar('Failed to add new travel period. ' + error, {variant: 'error'});
-                return error;
+                throw error;
             });
     }
 

@@ -79,8 +79,12 @@ class TravelPeriodFrom extends Component {
         const newTravelPeriod = {start: this.toDate(this.state.startDate), end: this.toDate(this.state.endDate), country: this.state.country, note: this.state.note}
         
         if (this.validate(newTravelPeriod)) {
-            context.addNewPeriod(newTravelPeriod);
-            this.setState(DEFAULT_STATE);
+            context.addNewPeriod(newTravelPeriod)
+                .then(response => {
+                    this.setState(DEFAULT_STATE);
+                }).catch(error => {
+                    
+                });
         }
     }
 
