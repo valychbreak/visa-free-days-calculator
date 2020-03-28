@@ -37,6 +37,7 @@ dependencies {
     implementation "javax.annotation:javax.annotation-api"
     implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut:micronaut-security-jwt"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
     testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
