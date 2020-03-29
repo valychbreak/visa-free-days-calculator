@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Singleton
@@ -23,5 +24,11 @@ public class UserRepository {
 
     public Collection<User> findAll() {
         return users;
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return users.stream()
+                .filter(user -> username.equals(user.getUsername()))
+                .findFirst();
     }
 }
