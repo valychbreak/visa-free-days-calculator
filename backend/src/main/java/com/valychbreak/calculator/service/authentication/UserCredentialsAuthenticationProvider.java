@@ -25,12 +25,10 @@ public class UserCredentialsAuthenticationProvider implements AuthenticationProv
 
     @Override
     public Publisher<AuthenticationResponse> authenticate(AuthenticationRequest authenticationRequest) {
-        Optional<User> user = userRepository.findByUsername((String) authenticationRequest.getIdentity())
-                .filter(foundUser -> authenticationRequest.getSecret().equals(foundUser.getPassword()));
-        if (user.isPresent()) {
-            return Flowable.just(new UserDetails(user.get().getUsername(), new ArrayList<>()));
-        }
+        Optional<AuthenticationResponse> authenticationResponse = userRepository.findByUsername((String) authenticationRequest.getIdentity())
+                .filter(foundUser -> authenticationRequest.getSecret().equals(foundUser.getPassword()))
+                .flatMap(foundUser -> Optional.of(new UserDetails(foundUser.getUsername(), new ArrayList<>())));
 
-        return Flowable.just(new AuthenticationFailed(CREDENTIALS_DO_NOT_MATCH));
+        return Flowable.just(authenticationResponse.orElse(new AuthenticationFailed(CREDENTIALS_DO_NOT_MATCH)));
     }
 }
