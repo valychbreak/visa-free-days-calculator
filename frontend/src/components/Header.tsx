@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom'
-import { AppBar, Toolbar, Drawer, List, ListItem, ListItemText, ListItemIcon, IconButton, Typography, Divider } from '@material-ui/core';
-import { Home, Flight, Close } from '@material-ui/icons';
+import {Link, Route, withRouter, RouteComponentProps } from 'react-router-dom'
+import { AppBar, Toolbar, Drawer, List, ListItem, ListItemText, ListItemIcon, IconButton, Typography, Divider, Menu, withStyles, WithStyles } from '@material-ui/core';
+import { Home, Flight, Close, AccountCircle, AccountCircleOutlined } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu'
 import './Header.css'
 
-type HeaderState = {
+const useStyles = () => ({
+    title: {
+        flexGrow: 1
+    }
+});
+
+interface HeaderState {
     drawerOpen: boolean
 }
 
-class Header extends Component<{}, HeaderState> {
+class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
     constructor(props: any) {
         super(props);
 
@@ -25,6 +31,7 @@ class Header extends Component<{}, HeaderState> {
     }
 
     render() {
+        const { classes } = this.props;
         return (
             <div>
                 <AppBar position="fixed">
@@ -32,7 +39,10 @@ class Header extends Component<{}, HeaderState> {
                         <IconButton onClick={() => this.toggleDrawer()}>
                             <MenuIcon fontSize="large" />
                         </IconButton>
-                        <Typography variant="h5" color="inherit">Visa calculator</Typography>
+                        <Typography className={classes.title} variant="h5" color="inherit">Visa calculator</Typography>
+                        <IconButton onClick={e => this.props.history.push('/profile')}>
+                            <AccountCircleOutlined />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
                 <Toolbar />
@@ -58,4 +68,4 @@ class Header extends Component<{}, HeaderState> {
     }
 }
 
-export default Header;
+export default withStyles(useStyles)(withRouter(Header));

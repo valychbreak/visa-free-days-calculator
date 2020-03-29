@@ -8,6 +8,7 @@ import Header from './components/Header';
 import AuthenticatedRoute from './common/AuthenticatedRoute';
 import UserContextProvider from './components/authentication/context/UserContextProvider';
 import LoginPage from './components/authentication/LoginPage';
+import ProfilePage from './components/profile/ProfilePage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                   <Route exact path='/' component={ReactMainPage} />
                   <Route exact path='/login' component={LoginPage} />
                   <AuthenticatedRoute path='/calculator' component={VisaFreeDateCalculator} />
+                  <AuthenticatedRoute path='/profile' component={ProfilePage} />
                 </Switch>
               </UserContextProvider>
             </Box>
