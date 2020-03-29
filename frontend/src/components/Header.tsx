@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {Link, Route, withRouter, RouteComponentProps } from 'react-router-dom'
-import { AppBar, Toolbar, Drawer, List, ListItem, ListItemText, ListItemIcon, IconButton, Typography, Divider, Menu, withStyles, WithStyles } from '@material-ui/core';
-import { Home, Flight, Close, AccountCircle, AccountCircleOutlined } from '@material-ui/icons';
+import {Link, withRouter, RouteComponentProps } from 'react-router-dom'
+import { AppBar, Toolbar, Drawer, List, ListItem, ListItemText, ListItemIcon, IconButton, Typography, Divider, withStyles, WithStyles, Button } from '@material-ui/core';
+import { Home, Flight, Close, AccountCircleOutlined } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu'
 import './Header.css'
 
@@ -40,9 +40,9 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
                             <MenuIcon fontSize="large" />
                         </IconButton>
                         <Typography className={classes.title} variant="h5" color="inherit">Visa calculator</Typography>
-                        <IconButton onClick={e => this.props.history.push('/profile')}>
-                            <AccountCircleOutlined />
-                        </IconButton>
+                        <Button startIcon={<AccountCircleOutlined />} onClick={e => this.props.history.push('/profile')}>
+                            Username
+                        </Button>
                     </Toolbar>
                 </AppBar>
                 <Toolbar />
