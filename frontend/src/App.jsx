@@ -16,19 +16,19 @@ function App() {
     <StylesProvider injectFirst>
       <SnackbarProvider>
         <Router>
-          <Header />
-          <Container>
-            <Box>
-              <UserContextProvider>
-                <Switch>
-                  <Route exact path='/' component={ReactMainPage} />
-                  <Route exact path='/login' component={LoginPage} />
-                  <AuthenticatedRoute path='/calculator' component={VisaFreeDateCalculator} />
-                  <AuthenticatedRoute path='/profile' component={ProfilePage} />
-                </Switch>
-              </UserContextProvider>
-            </Box>
-          </Container>
+          <UserContextProvider>
+            <Header />
+            <Container>
+              <Box>
+                  <Switch>
+                    <Route exact path='/' component={ReactMainPage} />
+                    <Route exact path='/login' component={LoginPage} />
+                    <AuthenticatedRoute path='/calculator' component={VisaFreeDateCalculator} />
+                    <AuthenticatedRoute path='/profile' component={ProfilePage} />
+                  </Switch>
+              </Box>
+            </Container>
+          </UserContextProvider>
         </Router>
       </SnackbarProvider>
     </StylesProvider>
