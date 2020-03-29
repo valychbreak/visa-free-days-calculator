@@ -5,6 +5,9 @@ import ReactMainPage from './components/ReactMainPage';
 import { StylesProvider, Container, Box } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import Header from './components/Header';
+import AuthenticatedRoute from './common/AuthenticatedRoute';
+import UserContextProvider from './components/authentication/context/UserContextProvider';
+import LoginPage from './components/authentication/LoginPage';
 
 function App() {
   return (
@@ -12,16 +15,18 @@ function App() {
     <StylesProvider injectFirst>
       <SnackbarProvider>
         <Router>
-            <Header />
-            <Container>
-              <Box>
+          <Header />
+          <Container>
+            <Box>
+              <UserContextProvider>
                 <Switch>
                   <Route exact path='/' component={ReactMainPage} />
-                  <Route path='/calculator' component={VisaFreeDateCalculator} />
+                  <Route exact path='/login' component={LoginPage} />
+                  <AuthenticatedRoute path='/calculator' component={VisaFreeDateCalculator} />
                 </Switch>
-              </Box>
-            </Container>
-            
+              </UserContextProvider>
+            </Box>
+          </Container>
         </Router>
       </SnackbarProvider>
     </StylesProvider>
