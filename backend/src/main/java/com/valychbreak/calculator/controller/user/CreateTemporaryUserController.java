@@ -1,12 +1,13 @@
 package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.domain.User;
-import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.service.authentication.TemporaryUserService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.security.token.jwt.render.AccessRefreshToken;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -15,19 +16,13 @@ import javax.inject.Inject;
 @PermitAll
 public class CreateTemporaryUserController {
 
-    private UserRepository userRepository;
-
     @Inject
-    public CreateTemporaryUserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private TemporaryUserService temporaryUserService;
 
     @Get("/user/temporary")
-    @Produces(MediaType.TEXT_PLAIN)
-    public HttpResponse<String> createTemporaryUser() {
-        User user = new User();
-        user.setUsername("TemporaryUsername");
-        userRepository.save(user);
-        return HttpResponse.ok("temporary_token");
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<AccessRefreshToken> createTemporaryUser() {
+        User temporaryUser = temporaryUserService.create();
+        return HttpResponse.ok(new AccessRefreshToken("temp_token", "temp_refresh_token", "bearer", 1000));
     }
 }

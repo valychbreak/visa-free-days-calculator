@@ -41,6 +41,8 @@ dependencies {
     implementation "io.micronaut:micronaut-security-jwt"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
+    compile 'org.apache.commons:commons-lang3:3.10'
+
     testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
