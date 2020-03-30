@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Paper, Button, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { UserContextConsumer, UserContext } from "../authentication/context/UserContext";
 
 const useStyles = () => ({
     paper: {
@@ -11,11 +12,19 @@ class ProfilePage extends Component<WithStyles> {
     render() {
         const {classes} = this.props;
         return (
-            <Paper className={classes.paper}>
-                <Typography>You are logged in as *TODO*</Typography>
-                <Button variant="contained">Logout</Button>
-            </Paper>
+            <UserContextConsumer>
+                {context => (
+                    <Paper className={classes.paper}>
+                        <Typography>You are logged in as *TODO*</Typography>
+                        <Button variant="contained" onClick={e => this.logout(context)}>Logout</Button>
+                    </Paper>
+                )}
+            </UserContextConsumer>
         )
+    }
+
+    private logout(context: UserContext) {
+        context.logout();
     }
 }
 

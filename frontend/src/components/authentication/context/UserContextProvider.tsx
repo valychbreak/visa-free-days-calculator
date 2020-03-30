@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import UserContext from "./UserContext";
+import {UserContextProviderComponent} from "./UserContext";
 import User from "../../../common/User";
 import AccessToken from "../../../common/AccessToken";
 
@@ -8,24 +8,27 @@ type ProviderState = {
     accessToken?: string;
 }
 
+const DEFAULT_STATE: ProviderState = {user: undefined, accessToken: undefined};
+
 class UserContextProvider extends Component<{}, ProviderState> {
-    
+
     constructor(props: any) {
         super(props);
 
-        this.state = {user: undefined, accessToken: undefined};
+        this.state = DEFAULT_STATE;
     }
 
     render() {
         return (
-            <UserContext.Provider value={{
+            <UserContextProviderComponent value={{
                 isAuthenticated: () => this.isAuthenticated(),
                 getUser: () => this.getUser(),
                 setUser: (user: User) => this.setUser(user),
-                authorizeWithTemporaryUser: () => this.authorizeWithTemporaryUser()
+                authorizeWithTemporaryUser: () => this.authorizeWithTemporaryUser(),
+                logout: () => this.logout()
             }}>
                 {this.props.children}
-            </UserContext.Provider>
+            </UserContextProviderComponent>
         )
     }
 
@@ -45,6 +48,10 @@ class UserContextProvider extends Component<{}, ProviderState> {
         const accessToken: AccessToken = new AccessToken("temp", "temp", "temp", 36000);
         this.setState({accessToken: accessToken.accessToken})
         return accessToken;
+    }
+
+    logout() {
+        this.setState(DEFAULT_STATE);
     }
 }
 
