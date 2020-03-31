@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Paper, Typography, withStyles, WithStyles } from "@material-ui/core";
-import UserContext from "./context/UserContext";
+import { UserContext, UserContextConsumer } from "./context/UserContext";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 const useStyles = () => ({
     paper: {
@@ -8,25 +9,30 @@ const useStyles = () => ({
     }
 });
 
-class LoginPage extends Component<WithStyles> {
+class LoginPage extends Component<RouteComponentProps & WithStyles> {
     render() {
         const { classes } = this.props;
         return (
-            <UserContext.Consumer>
+            <UserContextConsumer>
                 {context => (
                     <Paper className={classes.paper}>
                         <Typography variant="h4">You are not authorized.</Typography>
                         <Typography>Click button below to try with temporary user.</Typography>
                         <Button color='primary' variant="contained" 
-                                onClick={e => context.authorizeWithTemporaryUser()}
+                                onClick={e => this.authorizeWithTempUser(context)}
                         >
                             Try now!
                         </Button>
                     </Paper>
                 )}
-            </UserContext.Consumer>
+            </UserContextConsumer>
         )
+    }
+
+    private authorizeWithTempUser(context: UserContext) {
+        context.authorizeWithTemporaryUser();
+        this.props.history.push('/profile');
     }
 }
 
-export default withStyles(useStyles)(LoginPage);
+export default withRouter(withStyles(useStyles)(LoginPage));
