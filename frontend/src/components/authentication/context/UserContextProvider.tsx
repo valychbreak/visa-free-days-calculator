@@ -36,8 +36,8 @@ class UserContextProvider extends Component<{}, ProviderState> {
         return !!this.state.accessToken;
     }
 
-    getUser(): User | null {
-        return null;
+    getUser(): User | undefined {
+        return this.state.user;
     }
 
     setUser(user: User) {
@@ -45,8 +45,9 @@ class UserContextProvider extends Component<{}, ProviderState> {
     }
 
     authorizeWithTemporaryUser(): AccessToken {
+        const user = new User("temp_user");
         const accessToken: AccessToken = new AccessToken("temp", "temp", "temp", 36000);
-        this.setState({accessToken: accessToken.accessToken})
+        this.setState({user: user, accessToken: accessToken.accessToken});
         return accessToken;
     }
 

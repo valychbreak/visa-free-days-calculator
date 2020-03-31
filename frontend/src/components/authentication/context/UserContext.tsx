@@ -4,7 +4,7 @@ import AccessToken from '../../../common/AccessToken';
 
 export interface UserContext {
     isAuthenticated(): boolean;
-    getUser(): User | null;
+    getUser(): User | undefined;
     setUser(user: User): void;
     authorizeWithTemporaryUser(): AccessToken;
     logout(): void;

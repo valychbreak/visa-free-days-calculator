@@ -15,7 +15,7 @@ class ProfilePage extends Component<WithStyles> {
             <UserContextConsumer>
                 {context => (
                     <Paper className={classes.paper}>
-                        <Typography>You are logged in as *TODO*</Typography>
+                        <Typography>You are logged in as <b>{context.getUser()?.username}</b></Typography>
                         <Button variant="contained" onClick={e => this.logout(context)}>Logout</Button>
                     </Paper>
                 )}
