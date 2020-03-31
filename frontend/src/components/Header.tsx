@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link, withRouter, RouteComponentProps } from 'react-router-dom'
 import { AppBar, Toolbar, Drawer, List, ListItem, ListItemText, ListItemIcon, IconButton, Typography, Divider, withStyles, WithStyles, Button } from '@material-ui/core';
-import { Home, Flight, Close, AccountCircleOutlined, AccountCircle, ExitToApp } from '@material-ui/icons';
+import { Home, Flight, Close, AccountCircle, ExitToApp } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu'
 import './Header.css'
 import UserContext from './authentication/context/UserContext';
@@ -32,7 +32,6 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
     }
 
     render() {
-        const { classes } = this.props;
         return (
             <div>
                 {this.renderApplicationBar()}
