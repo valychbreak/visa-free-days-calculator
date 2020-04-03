@@ -43,6 +43,7 @@ class CreateTemporaryUserControllerTest {
         assertThat(user.getUsername()).isNotEmpty();
         assertThat(user.getPassword()).isNotEmpty();
         assertThat(user.getId()).isNotNull();
+        assertThat(user.getTravelPeriods()).isEmpty();
     }
 
     @Test
