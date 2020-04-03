@@ -1,5 +1,6 @@
 package com.valychbreak.calculator.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @JsonDeserialize(builder = TravelPeriod.TravelPeriodBuilder.class)
+@JsonIgnoreProperties("user")
 @Getter
 @Setter
 public class TravelPeriod {
