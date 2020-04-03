@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button, Paper, Typography, withStyles, WithStyles } from "@material-ui/core";
 import { UserContext, UserContextConsumer } from "./context/UserContext";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import AccessToken from "../../common/AccessToken";
 import { withSnackbar, WithSnackbarProps } from "notistack";
 
 const useStyles = () => ({
