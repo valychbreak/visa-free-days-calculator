@@ -3,6 +3,7 @@ import {UserContextProviderComponent} from "./UserContext";
 import User from "../../../common/User";
 import AccessToken from "../../../common/AccessToken";
 import Axios from "axios";
+import Api from "../../../common/Api";
 
 type ProviderState = {
     user?: User;
@@ -17,6 +18,10 @@ class UserContextProvider extends Component<{}, ProviderState> {
         super(props);
 
         this.state = DEFAULT_STATE;
+    }
+
+    componentDidMount() {
+
     }
 
     render() {
@@ -50,8 +55,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
         const accessToken = this.toAccessToken(response.data);
         Axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken.accessToken;
 
-        const userInfoResponse = await Axios.get('http://localhost:8080/api/user/info');
-        const user = (userInfoResponse.data as User);
+        const user = await Api.fetchUserInfo();
         this.setState({ user: user, accessToken: accessToken.accessToken });
         return accessToken;
     }
