@@ -6,7 +6,7 @@ export interface UserContext {
     isAuthenticated(): boolean;
     getUser(): User | undefined;
     setUser(user: User): void;
-    authorizeWithTemporaryUser(): AccessToken;
+    authorizeWithTemporaryUser(): Promise<AccessToken>;
     logout(): void;
 }
 

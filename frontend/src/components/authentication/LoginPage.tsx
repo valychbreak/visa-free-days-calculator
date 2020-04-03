@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button, Paper, Typography, withStyles, WithStyles } from "@material-ui/core";
 import { UserContext, UserContextConsumer } from "./context/UserContext";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import AccessToken from "../../common/AccessToken";
+import { withSnackbar, WithSnackbarProps } from "notistack";
 
 const useStyles = () => ({
     paper: {
@@ -9,7 +11,7 @@ const useStyles = () => ({
     }
 });
 
-class LoginPage extends Component<RouteComponentProps & WithStyles> {
+class LoginPage extends Component<RouteComponentProps & WithStyles & WithSnackbarProps> {
     render() {
         const { classes } = this.props;
         return (
@@ -30,9 +32,13 @@ class LoginPage extends Component<RouteComponentProps & WithStyles> {
     }
 
     private authorizeWithTempUser(context: UserContext) {
-        context.authorizeWithTemporaryUser();
-        this.props.history.push('/profile');
+        context.authorizeWithTemporaryUser()
+            .then(accessToken => {
+                this.props.history.push('/profile');
+            }).catch(error => {
+                this.props.enqueueSnackbar('Failed to login as temporary user. ' + error, {variant: 'error'});
+            });
     }
 }
 
-export default withRouter(withStyles(useStyles)(LoginPage));
+export default withRouter(withSnackbar(withStyles(useStyles)(LoginPage)));
