@@ -14,14 +14,47 @@ const DEFAULT_STATE: ProviderState = {user: undefined, accessToken: undefined};
 
 class UserContextProvider extends Component<{}, ProviderState> {
 
+    private static ACCESS_TOKEN_KEY = "authToken";
+
     constructor(props: any) {
         super(props);
 
-        this.state = DEFAULT_STATE;
+        const tokenJson = localStorage.getItem(UserContextProvider.ACCESS_TOKEN_KEY);
+        if (tokenJson !== null) {
+            console.log('Using cached token');
+
+            const existingToken: AccessToken = JSON.parse(tokenJson);
+            this.applyAccessToken(existingToken.accessToken);
+
+            this.state = { accessToken: existingToken.accessToken };
+        } else {
+            this.state = DEFAULT_STATE;
+        }
+    }
+
+    private applyAccessToken(accessToken: string) {
+        Axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
     }
 
     componentDidMount() {
+        const existingToken = this.state.accessToken;
+        if (existingToken !== undefined) {
+            this.fetchUserOrLogout();
+        }
+    }
 
+    private fetchUserOrLogout(): Promise<User> {
+        return Api.fetchUserInfo().then(user => {
+            this.setUser(user);
+            return user;
+        }).catch(error => {
+            if (error.status !== null && error.status === 401) {
+                console.log('Removing cached token because it was expired or not valid anymore')
+                localStorage.removeItem(UserContextProvider.ACCESS_TOKEN_KEY);
+                this.setState(DEFAULT_STATE);
+            }
+            return error;
+        });
     }
 
     render() {
@@ -53,10 +86,11 @@ class UserContextProvider extends Component<{}, ProviderState> {
     private async authorizeWithTemporaryUser(): Promise<AccessToken> {
         const response = await Axios.get('http://localhost:8080/api/user/temporary');
         const accessToken = this.toAccessToken(response.data);
-        Axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken.accessToken;
 
-        const user = await Api.fetchUserInfo();
-        this.setState({ user: user, accessToken: accessToken.accessToken });
+        localStorage.setItem(UserContextProvider.ACCESS_TOKEN_KEY, JSON.stringify(accessToken));
+        this.applyAccessToken(accessToken.accessToken);
+
+        this.fetchUserOrLogout();
         return accessToken;
     }
 
