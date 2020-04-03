@@ -5,8 +5,7 @@ import com.valychbreak.calculator.repository.UserRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import java.util.Collections;
+import java.util.ArrayList;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
@@ -25,7 +24,7 @@ public class TemporaryUserService {
         user.setUsername(randomAlphanumeric(32));
         user.setPassword(randomAlphanumeric(32));
         user.setEmail(randomAlphanumeric(32));
-        user.setTravelPeriods(Collections.emptyList());
+        user.setTravelPeriods(new ArrayList<>());
         userRepository.save(user);
         return user;
     }

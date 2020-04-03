@@ -17,14 +17,16 @@ public class TravelPeriod {
     private LocalDate end;
     private String country;
     private String note;
+    private User user;
 
     @Builder
-    private TravelPeriod(Long id, LocalDate start, LocalDate end, String country, String note) {
+    private TravelPeriod(Long id, LocalDate start, LocalDate end, String country, String note, User user) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.country = country;
         this.note = note;
+        this.user = user;
     }
 
     @JsonPOJOBuilder(withPrefix = "")
