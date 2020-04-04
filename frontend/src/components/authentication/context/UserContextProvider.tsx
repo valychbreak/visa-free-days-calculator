@@ -51,8 +51,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
             const status = error.response.status;
             if (status !== null && status === 401) {
                 console.log('Removing cached token because it was expired or not valid anymore')
-                localStorage.removeItem(UserContextProvider.ACCESS_TOKEN_KEY);
-                this.setState(DEFAULT_STATE);
+                this.logout();
             }
             return error;
         });
@@ -110,6 +109,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
     }
 
     private logout() {
+        localStorage.removeItem(UserContextProvider.ACCESS_TOKEN_KEY);
         this.setState(DEFAULT_STATE);
     }
 }
