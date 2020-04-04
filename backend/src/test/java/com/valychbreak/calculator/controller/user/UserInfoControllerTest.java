@@ -35,6 +35,7 @@ class UserInfoControllerTest {
     @Test
     void shouldReturnUserInfo() {
         User testUser = createUser("testTravelPeriods");
+        testUser.setTemporary(true);
         userRepository.save(testUser);
 
         HttpRequest<Object> httpRequest = HttpRequest.GET("/user/info")
@@ -48,6 +49,7 @@ class UserInfoControllerTest {
         assertThat(user.getId()).isNotNull();
         assertThat(user.getUsername()).isNotEmpty();
         assertThat(user.getEmail()).isNotEmpty();
+        assertThat(user.isTemporary()).isTrue();
     }
 
     @Test

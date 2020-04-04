@@ -35,6 +35,7 @@ public class UserInfoController {
                     transformedUser.setId(user.getId());
                     transformedUser.setEmail(user.getEmail());
                     transformedUser.setUsername(user.getUsername());
+                    transformedUser.setTemporary(user.isTemporary());
                     return Optional.of(transformedUser);
                 }).orElseThrow();
 

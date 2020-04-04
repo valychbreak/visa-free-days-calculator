@@ -42,6 +42,7 @@ class CreateTemporaryUserControllerTest {
         User user = users.iterator().next();
         assertThat(user.getUsername()).isNotEmpty();
         assertThat(user.getPassword()).isNotEmpty();
+        assertThat(user.isTemporary()).isTrue();
         assertThat(user.getId()).isNotNull();
         assertThat(user.getTravelPeriods()).isEmpty();
     }

@@ -24,6 +24,7 @@ public class TemporaryUserService {
         user.setUsername(randomAlphanumeric(32));
         user.setPassword(randomAlphanumeric(32));
         user.setEmail(randomAlphanumeric(32));
+        user.setTemporary(true);
         user.setTravelPeriods(new ArrayList<>());
         userRepository.save(user);
         return user;
