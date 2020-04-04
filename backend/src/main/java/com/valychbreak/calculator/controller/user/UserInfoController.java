@@ -1,6 +1,7 @@
 package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.domain.dto.UserDto;
+import com.valychbreak.calculator.exception.UserNotFoundException;
 import com.valychbreak.calculator.repository.UserRepository;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -37,7 +38,7 @@ public class UserInfoController {
                     transformedUser.setUsername(user.getUsername());
                     transformedUser.setTemporary(user.isTemporary());
                     return Optional.of(transformedUser);
-                }).orElseThrow();
+                }).orElseThrow(UserNotFoundException::new);
 
         return HttpResponse.ok(userDto);
     }

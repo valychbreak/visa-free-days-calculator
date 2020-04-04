@@ -1,6 +1,7 @@
 package com.valychbreak.calculator.controller;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
+import com.valychbreak.calculator.exception.UserNotFoundException;
 import com.valychbreak.calculator.repository.UserRepository;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
@@ -27,7 +28,7 @@ public class GetTravelPeriodController {
     public HttpResponse<Collection<TravelPeriod>> getAllUserTravelPeriods(Principal principal) {
         return HttpResponse.ok(
                 userRepository.findByUsername(principal.getName())
-                        .orElseThrow()
+                        .orElseThrow(UserNotFoundException::new)
                         .getTravelPeriods()
         );
     }

@@ -62,4 +62,20 @@ class UserInfoControllerTest {
 
         assertThat(httpClientResponseException.getStatus().getCode()).isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
     }
+
+    @Test
+    void shouldReturnUnauthorizedWhenUserFromTokenDoesNotExist() {
+        User testUser = createUser("testUnauthorized");
+        userRepository.save(testUser);
+
+        String token = authTokenProvider.getToken(testUser);
+        userRepository.remove(testUser);
+
+        HttpRequest<Object> httpRequest = HttpRequest.GET("/user/info").bearerAuth(token);
+
+        HttpClientResponseException httpClientResponseException = assertThrows(HttpClientResponseException.class,
+                () -> client.toBlocking().exchange(httpRequest));
+
+        assertThat(httpClientResponseException.getStatus().getCode()).isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
+    }
 }

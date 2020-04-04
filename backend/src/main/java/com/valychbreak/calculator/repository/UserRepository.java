@@ -31,4 +31,9 @@ public class UserRepository {
                 .filter(user -> username.equals(user.getUsername()))
                 .findFirst();
     }
+
+    public User remove(User user) {
+        users.remove(user);
+        return user;
+    }
 }

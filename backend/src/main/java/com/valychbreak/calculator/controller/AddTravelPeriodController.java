@@ -3,6 +3,7 @@ package com.valychbreak.calculator.controller;
 import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.TravelPeriodDTO;
 import com.valychbreak.calculator.domain.User;
+import com.valychbreak.calculator.exception.UserNotFoundException;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.repository.UserRepository;
 import io.micronaut.http.HttpResponse;
@@ -34,7 +35,9 @@ public class AddTravelPeriodController {
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<TravelPeriodDTO> addNewPeriod(@Body TravelPeriodDTO travelPeriodDTO, Principal principal) {
 
-        User user = userRepository.findByUsername(principal.getName()).orElseThrow();
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(UserNotFoundException::new);
+
         TravelPeriod builtTravelPeriod = TravelPeriod.builder()
                 .start(LocalDate.parse(travelPeriodDTO.getStart()))
                 .end(LocalDate.parse(travelPeriodDTO.getEnd()))
