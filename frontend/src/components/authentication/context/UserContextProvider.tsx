@@ -48,7 +48,8 @@ class UserContextProvider extends Component<{}, ProviderState> {
             this.setUser(user);
             return user;
         }).catch(error => {
-            if (error.status !== null && error.status === 401) {
+            const status = error.response.status;
+            if (status !== null && status === 401) {
                 console.log('Removing cached token because it was expired or not valid anymore')
                 localStorage.removeItem(UserContextProvider.ACCESS_TOKEN_KEY);
                 this.setState(DEFAULT_STATE);
@@ -89,6 +90,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
 
         localStorage.setItem(UserContextProvider.ACCESS_TOKEN_KEY, JSON.stringify(accessToken));
         this.applyAccessToken(accessToken.accessToken);
+        this.setState({accessToken: accessToken.accessToken})
 
         this.fetchUserOrLogout();
         return accessToken;
