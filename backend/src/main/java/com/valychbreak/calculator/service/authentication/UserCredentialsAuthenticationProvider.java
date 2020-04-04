@@ -1,6 +1,5 @@
 package com.valychbreak.calculator.service.authentication;
 
-import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.UserRepository;
 import io.micronaut.security.authentication.*;
 import io.reactivex.Flowable;
