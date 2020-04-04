@@ -65,6 +65,11 @@ class DeleteTravelPeriodControllerTest {
         assertThat(httpResponse.code()).isEqualTo(HttpStatus.OK.getCode());
 
         assertThat(travelPeriodRepository.findById(travelPeriod.getId())).isEmpty();
+
+        User loadedUser = userRepository.findByUsername(this.user.getUsername()).get();
+        assertThat(loadedUser.getTravelPeriods())
+                .extracting("id")
+                .doesNotContain(travelPeriod.getId());
     }
 
     @Test
@@ -91,7 +96,6 @@ class DeleteTravelPeriodControllerTest {
                 .user(anotherUser)
                 .build();
 
-        anotherUser.getTravelPeriods().add(travelPeriod);
         travelPeriodRepository.save(travelPeriod);
 
         HttpRequest<Object> httpRequest = HttpRequest.DELETE(String.format("/period/%s/delete", travelPeriod.getId()))

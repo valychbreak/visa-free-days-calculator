@@ -46,8 +46,6 @@ public class AddTravelPeriodController {
                 .user(user)
                 .build();
 
-        user.getTravelPeriods().add(builtTravelPeriod);
-
         travelPeriodRepository.save(builtTravelPeriod);
 
         TravelPeriodDTO savedTravelPeriod = new TravelPeriodDTO();

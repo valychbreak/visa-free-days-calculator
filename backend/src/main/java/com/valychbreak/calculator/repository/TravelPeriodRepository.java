@@ -16,15 +16,6 @@ public class TravelPeriodRepository {
 
     public TravelPeriodRepository() {
         this.travelPeriods = new ArrayList<>();
-
-        this.save(TravelPeriod.builder()
-                .id(1L)
-                .start(LocalDate.of(2020, 3, 15).minusDays(4))
-                .end(LocalDate.of(2020, 3, 15))
-                .country("Poland")
-                .note("Some note")
-                .build()
-        );
     }
 
     public Collection<TravelPeriod> findAll() {
@@ -34,6 +25,10 @@ public class TravelPeriodRepository {
     public TravelPeriod save(TravelPeriod travelPeriod) {
         travelPeriod.setId(nextId++);
         travelPeriods.add(travelPeriod);
+
+        travelPeriod.getUser()
+                .getTravelPeriods()
+                .add(travelPeriod);
 
         return travelPeriod;
     }
@@ -46,6 +41,7 @@ public class TravelPeriodRepository {
 
     public TravelPeriod delete(TravelPeriod travelPeriod) {
         travelPeriods.remove(travelPeriod);
+        travelPeriod.getUser().getTravelPeriods().remove(travelPeriod);
         return travelPeriod;
     }
 }
