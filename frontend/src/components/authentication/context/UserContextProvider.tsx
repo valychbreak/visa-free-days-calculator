@@ -48,7 +48,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
             this.setUser(user);
             return user;
         }).catch(error => {
-            const status = error.response.status;
+            const status = error.response?.status;
             if (status !== null && status === 401) {
                 console.log('Removing cached token because it was expired or not valid anymore')
                 this.logout();
