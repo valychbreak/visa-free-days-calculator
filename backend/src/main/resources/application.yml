@@ -6,6 +6,13 @@ micronaut:
     cors:
       enabled: true
 
+  router:
+    static-resources:
+      default:
+        enabled: true
+        mapping: "/**"
+        paths: "classpath:public"
+
   security:
     enabled: true
     endpoints:
@@ -13,6 +20,11 @@ micronaut:
         enabled: true
       oauth:
         enabled: true
+    intercept-url-map:
+      - pattern: /**
+        http-method: GET
+        access:
+          - isAnonymous()
     token:
       jwt:
         enabled: true
