@@ -1,0 +1,46 @@
+{
+  "Resources": {
+    "EC2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/sdm",
+            "Ebs": {
+              "VolumeType": "io1",
+              "Iops": "200",
+              "DeleteOnTermination": "true",
+              "VolumeSize": "20"
+            }
+          }
+        ],
+        "EbsOptimized": false,
+        "IamInstanceProfile": "ecs-ec2-service-role",
+        "ImageId": "ami-076431be05aaf8080",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "InstanceType": "t2.micro",
+        "Monitoring": false,
+        "NetworkInterfaces": [
+          {
+            "AssociatePublicIpAddress": true,
+            "DeleteOnTermination": true,
+            "Description": "EC2 network interface",
+            "DeviceIndex": "0",
+            "GroupSet": [
+              "sg-0ccf5d68"
+            ],
+            "SubnetId": "subnet-0ed1a7b4976e71964"
+          }
+        ],
+        "SourceDestCheck": false,
+        "Tags": [
+          {
+            "Key": "cloud-formation",
+            "Value": "get-started"
+          }
+        ],
+        "Tenancy": "default"
+      }
+    }
+  }
+}

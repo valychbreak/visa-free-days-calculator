@@ -1,0 +1,27 @@
+{
+  "Type" : "AWS::ECS::Service",
+  "Properties" : {
+    "Cluster" : "default-getting-started",
+    "DeploymentConfiguration" : {
+      "MaximumPercent" : "200",
+      "MinimumHealthyPercent" : "100"
+    },
+    "DeploymentController" : {"Type":  "ECS"},
+    "DesiredCount" : 1,
+    "EnableECSManagedTags" : false,
+    "HealthCheckGracePeriodSeconds" : 10,
+    "LaunchType" : "EC2",
+    "LoadBalancers" : [ LoadBalancer, ... ],
+    "NetworkConfiguration" : NetworkConfiguration,
+    "PlacementConstraints" : [ PlacementConstraint, ... ],
+    "PlacementStrategies" : [ PlacementStrategy, ... ],
+    "PlatformVersion" : String,
+    "PropagateTags" : String,
+    "Role" : String,
+    "SchedulingStrategy" : String,
+    "ServiceName" : String,
+    "ServiceRegistries" : [ ServiceRegistry, ... ],
+    "Tags" : [ Tag, ... ],
+    "TaskDefinition" : String
+  }
+}
