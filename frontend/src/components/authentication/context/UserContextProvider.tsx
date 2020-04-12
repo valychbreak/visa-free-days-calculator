@@ -84,7 +84,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
     }
 
     private async authorizeWithTemporaryUser(): Promise<AccessToken> {
-        const response = await Axios.get('http://localhost:8080/api/user/temporary');
+        const response = await Axios.get('/api/user/temporary');
         const accessToken = this.toAccessToken(response.data);
 
         localStorage.setItem(UserContextProvider.ACCESS_TOKEN_KEY, JSON.stringify(accessToken));

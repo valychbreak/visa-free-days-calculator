@@ -47,7 +47,7 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
 
-        return Axios.post("http://localhost:8080/api/period/add", params, config)
+        return Axios.post("/api/period/add", params, config)
             .then(response => {
                 const createTravelPeriod = (response.data as TravelPeriod);
                 this.setState({ travelPeriods: [...this.state.travelPeriods, createTravelPeriod] });
@@ -61,7 +61,7 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
     }
 
     private deleteTravelPeriod(travelPeriod: TravelPeriod) {
-        Axios.delete('http://localhost:8080/api/period/' + travelPeriod.id + '/delete')
+        Axios.delete('/api/period/' + travelPeriod.id + '/delete')
             .then(reponse => {
                 const newTravelPeriods = this.state.travelPeriods.filter(existingTravelPeriod => existingTravelPeriod.id !== travelPeriod.id);
                 this.setState({travelPeriods: [...newTravelPeriods]});
@@ -73,7 +73,7 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
     }
 
     private loadTravelPeriods() {
-        Axios.get('http://localhost:8080/api/period/all')
+        Axios.get('/api/period/all')
             .then(res => {
                 this.setState({ travelPeriods: res.data, failed: false });
             })
