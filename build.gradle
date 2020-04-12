@@ -1,0 +1,25 @@
+
+task copyFrontendResources(dependsOn: ':frontend:build') {
+    group = 'build'
+    description = 'Copy client resources to server source'
+}
+
+copyFrontendResources.doFirst {
+    copy {
+        from project(':frontend').buildDir.absolutePath
+        into "${project(':backend').buildDir}/resources/main/public"
+    }
+}
+
+task assembleServerAndClient(dependsOn: ['copyFrontendResources', ':backend:shadowJar']) {
+    group = 'build'
+    description = 'Build combined server & client JAR'
+}
+
+task test {
+
+}
+
+task check {
+
+}
