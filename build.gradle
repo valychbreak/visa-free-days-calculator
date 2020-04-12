@@ -8,6 +8,7 @@ copyFrontendResources.doFirst {
     copy {
         from project(':frontend').buildDir.absolutePath
         into "${project(':backend').buildDir}/resources/main/public"
+        into "${project(':backend').projectDir}/src/main/resources/public"
     }
 }
 
