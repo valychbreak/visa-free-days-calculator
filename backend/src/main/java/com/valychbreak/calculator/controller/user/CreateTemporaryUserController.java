@@ -1,17 +1,15 @@
 package com.valychbreak.calculator.controller.user;
 
+import com.valychbreak.calculator.controller.AuthenticationClient;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.service.authentication.TemporaryUserService;
-import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
-import io.micronaut.http.client.RxHttpClient;
-import io.micronaut.http.client.annotation.Client;
-import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.token.jwt.render.AccessRefreshToken;
+import io.reactivex.Single;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -21,24 +19,20 @@ import javax.inject.Inject;
 public class CreateTemporaryUserController {
 
     private TemporaryUserService temporaryUserService;
-    private RxHttpClient authenticationClient;
+    private AuthenticationClient authenticationClient;
 
     @Inject
     public CreateTemporaryUserController(TemporaryUserService temporaryUserService,
-                                         @Client("/api/login") RxHttpClient authenticationClient) {
+                                         AuthenticationClient authenticationClient) {
         this.temporaryUserService = temporaryUserService;
         this.authenticationClient = authenticationClient;
     }
 
     @Get("/user/temporary")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<AccessRefreshToken> createTemporaryUser() {
+    public Single<HttpResponse<AccessRefreshToken>> createTemporaryUser() {
         User temporaryUser = temporaryUserService.create();
-
-        HttpRequest<UsernamePasswordCredentials> httpRequest = HttpRequest.POST(
-                "", new UsernamePasswordCredentials(temporaryUser.getUsername(), temporaryUser.getPassword())
-        );
-
-        return authenticationClient.toBlocking().exchange(httpRequest, AccessRefreshToken.class);
+        return authenticationClient.requestToken(temporaryUser.getUsername(), temporaryUser.getPassword())
+                .map(HttpResponse::ok);
     }
 }
