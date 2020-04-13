@@ -9,6 +9,9 @@
         </encoder>
     </appender>
 
+    <logger name="io.micronaut.http.server.netty" level="debug" />
+    <logger name="com.valychbreak.calculator" level="debug" />
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
