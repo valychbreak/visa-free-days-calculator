@@ -19,6 +19,7 @@ micronaut:
     endpoints:
       login:
         enabled: true
+        path: /api/login
       oauth:
         enabled: true
     intercept-url-map:
