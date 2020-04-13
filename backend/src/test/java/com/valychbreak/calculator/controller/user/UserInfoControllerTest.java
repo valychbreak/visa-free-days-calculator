@@ -69,7 +69,7 @@ class UserInfoControllerTest {
         userRepository.save(testUser);
 
         String token = authTokenProvider.getToken(testUser);
-        userRepository.remove(testUser);
+        userRepository.delete(testUser);
 
         HttpRequest<Object> httpRequest = HttpRequest.GET("/user/info").bearerAuth(token);
 

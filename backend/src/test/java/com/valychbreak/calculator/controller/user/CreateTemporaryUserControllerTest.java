@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +35,7 @@ class CreateTemporaryUserControllerTest {
 
         assertThat(response.code()).isEqualTo(HttpStatus.OK.getCode());
 
-        Collection<User> users = userRepository.findAll();
+        Iterable<User> users = userRepository.findAll();
         assertThat(users).hasSize(1);
 
         User user = users.iterator().next();
