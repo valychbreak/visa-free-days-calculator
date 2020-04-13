@@ -18,7 +18,7 @@ public class TestAuthTokenProvider {
 
     private RxHttpClient authClient;
 
-    public TestAuthTokenProvider(@Client("/login") RxHttpClient authClient) {
+    public TestAuthTokenProvider(@Client("/api/login") RxHttpClient authClient) {
         this.authClient = authClient;
     }
 

@@ -25,7 +25,7 @@ public class CreateTemporaryUserController {
 
     @Inject
     public CreateTemporaryUserController(TemporaryUserService temporaryUserService,
-                                         @Client("/login") RxHttpClient authenticationClient) {
+                                         @Client("/api/login") RxHttpClient authenticationClient) {
         this.temporaryUserService = temporaryUserService;
         this.authenticationClient = authenticationClient;
     }
