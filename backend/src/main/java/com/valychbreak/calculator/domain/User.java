@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,5 +22,5 @@ public class User {
     private boolean isTemporary;
 
     @Transient
-    private List<TravelPeriod> travelPeriods;
+    private List<TravelPeriod> travelPeriods = new ArrayList<>();
 }

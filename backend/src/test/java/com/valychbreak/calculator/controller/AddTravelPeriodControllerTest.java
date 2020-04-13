@@ -5,20 +5,24 @@ import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.repository.UserRepository;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
+import com.valychbreak.calculator.utils.ControllerTestDriver;
 import io.micronaut.http.*;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.transaction.SynchronousTransactionManager;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+
+import java.sql.Connection;
 
 import static com.valychbreak.calculator.utils.TestUtils.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class AddTravelPeriodControllerTest {
 
     @Inject
@@ -34,12 +38,16 @@ class AddTravelPeriodControllerTest {
     @Inject
     private TestAuthTokenProvider authTokenProvider;
 
+    @Inject
+    private ControllerTestDriver controllerTestDriver;
+
     @Test
     void shouldCreateNewPeriod() {
         TravelPeriodDTO travelPeriodDTO = createTravelPeriodDTO();
 
-        User user = createUser("createNewPeriodUser");
-        userRepository.save(user);
+        User user = controllerTestDriver.saveUser(createUser("createNewPeriodUser"));
+
+        assertThat(userRepository.findByUsername(user.getUsername())).isPresent();
 
         MutableHttpRequest<TravelPeriodDTO> httpRequest = HttpRequest.POST("/period/add", travelPeriodDTO)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
