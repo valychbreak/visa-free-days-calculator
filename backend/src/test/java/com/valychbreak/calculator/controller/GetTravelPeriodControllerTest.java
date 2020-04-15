@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.User;
+import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.utils.ControllerTestDriver;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpRequest;
@@ -21,40 +23,53 @@ import java.util.List;
 import static com.valychbreak.calculator.utils.TestUtils.createUser;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class GetTravelPeriodControllerTest {
 
     @Inject
     @Client("/api")
-    RxHttpClient client;
+    private RxHttpClient client;
 
     @Inject
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Inject
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Inject
-    TestAuthTokenProvider testAuthTokenProvider;
+    private TravelPeriodRepository travelPeriodRepository;
+
+    @Inject
+    private TestAuthTokenProvider testAuthTokenProvider;
+
+    @Inject
+    private ControllerTestDriver controllerTestDriver;
 
     @Test
     void shouldReturnAllTravelPeriodsForUser() throws JSONException, JsonProcessingException {
+        // given
         TravelPeriod travelPeriod = TravelPeriod.builder()
-                .id(1L)
                 .start(LocalDate.of(2020, 3, 11))
                 .end(LocalDate.of(2020, 3, 15))
                 .country("Poland")
                 .note("Travel of testUser")
                 .build();
-        User testUser = createUser("testTravelPeriods", List.of(travelPeriod));
-        userRepository.save(testUser);
 
-        String expected = objectMapper.writeValueAsString(List.of(travelPeriod));
+        User testUser = controllerTestDriver.performTransactionalWrite(() -> {
+            User createdUser = userRepository.save(createUser("testTravelPeriods"));
+            travelPeriod.setUser(createdUser);
+            travelPeriodRepository.save(travelPeriod);
+            return createdUser;
+        });
 
-        MutableHttpRequest<Object> httpRequest = HttpRequest.GET("/period/all")
+        String expectedResponse = objectMapper.writeValueAsString(List.of(travelPeriod));
+
+        // when
+        HttpRequest<Object> httpRequest = HttpRequest.GET("/period/all")
                 .bearerAuth(testAuthTokenProvider.getToken(testUser));
 
+        // then
         String response = client.toBlocking().retrieve(httpRequest);
-        assertEquals(expected, response, true);
+        assertEquals(expectedResponse, response, true);
     }
 }

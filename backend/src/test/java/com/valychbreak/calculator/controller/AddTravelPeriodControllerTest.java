@@ -4,6 +4,7 @@ import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.TravelPeriodDTO;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
+import com.valychbreak.calculator.repository.UserRepository;
 import com.valychbreak.calculator.utils.ControllerTestDriver;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
 import io.micronaut.http.HttpRequest;
@@ -31,6 +32,9 @@ class AddTravelPeriodControllerTest {
     private RxHttpClient client;
 
     @Inject
+    private UserRepository userRepository;
+
+    @Inject
     private TravelPeriodRepository travelPeriodRepository;
 
     @Inject
@@ -43,7 +47,9 @@ class AddTravelPeriodControllerTest {
     void shouldCreateNewPeriod() {
         // given
         TravelPeriodDTO travelPeriodDTO = createTravelPeriodDTO();
-        User user = controllerTestDriver.saveUser(createUser("createNewPeriodUser"));
+        User user = controllerTestDriver.performTransactionalWrite(
+                () -> userRepository.save(createUser("createNewPeriodUser"))
+        );
 
         HttpRequest<TravelPeriodDTO> httpRequest = HttpRequest.POST("/period/add", travelPeriodDTO)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_TYPE)

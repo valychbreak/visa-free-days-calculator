@@ -4,6 +4,7 @@ import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.utils.ControllerTestDriver;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -23,7 +24,7 @@ import static com.valychbreak.calculator.utils.TestUtils.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class DeleteTravelPeriodControllerTest {
 
     @Inject
@@ -39,12 +40,15 @@ class DeleteTravelPeriodControllerTest {
     @Inject
     private TestAuthTokenProvider authTokenProvider;
 
+    @Inject
+    private ControllerTestDriver controllerTestDriver;
+
     private User user;
 
     @BeforeEach
     void setUp() {
         user = createUser("deleteTravelPeriodUser");
-        userRepository.save(user);
+        controllerTestDriver.performTransactionalWrite(() -> userRepository.save(user));
     }
 
     @Test
@@ -56,7 +60,7 @@ class DeleteTravelPeriodControllerTest {
                 .user(user)
                 .build();
 
-        travelPeriodRepository.save(travelPeriod);
+        controllerTestDriver.performTransactionalWrite(() -> travelPeriodRepository.save(travelPeriod));
 
         HttpRequest<Object> httpRequest = HttpRequest.DELETE(String.format("/period/%s/delete", travelPeriod.getId()))
                 .bearerAuth(authTokenProvider.getToken(user));
@@ -65,11 +69,6 @@ class DeleteTravelPeriodControllerTest {
         assertThat(httpResponse.code()).isEqualTo(HttpStatus.OK.getCode());
 
         assertThat(travelPeriodRepository.findById(travelPeriod.getId())).isEmpty();
-
-        User loadedUser = userRepository.findByUsername(this.user.getUsername()).get();
-        assertThat(loadedUser.getTravelPeriods())
-                .extracting("id")
-                .doesNotContain(travelPeriod.getId());
     }
 
     @Test
@@ -87,7 +86,7 @@ class DeleteTravelPeriodControllerTest {
     @Test
     void shouldReturnNotFoundErrorWhenUserDoesNotOwnTravelPeriod() {
         User anotherUser = createUser("anotherUserDeletePeriod");
-        userRepository.save(anotherUser);
+        controllerTestDriver.performTransactionalWrite(() -> userRepository.save(anotherUser));
 
         TravelPeriod travelPeriod = TravelPeriod.builder()
                 .start(LocalDate.of(2020, 3, 15))
@@ -96,7 +95,7 @@ class DeleteTravelPeriodControllerTest {
                 .user(anotherUser)
                 .build();
 
-        travelPeriodRepository.save(travelPeriod);
+        controllerTestDriver.performTransactionalWrite(() -> travelPeriodRepository.save(travelPeriod));
 
         HttpRequest<Object> httpRequest = HttpRequest.DELETE(String.format("/period/%s/delete", travelPeriod.getId()))
                 .bearerAuth(authTokenProvider.getToken(user));
