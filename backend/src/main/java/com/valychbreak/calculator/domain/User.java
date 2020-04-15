@@ -21,6 +21,6 @@ public class User {
     private String password;
     private boolean isTemporary;
 
-    @Transient
+    @OneToMany(mappedBy = "user")
     private List<TravelPeriod> travelPeriods = new ArrayList<>();
 }

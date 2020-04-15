@@ -8,8 +8,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.Connection;
 
-import static com.valychbreak.calculator.utils.TestUtils.createUser;
-
 @Singleton
 public class ControllerTestDriver {
 
@@ -21,8 +19,6 @@ public class ControllerTestDriver {
 
 
     public User saveUser(final User user) {
-        return transactionManager.executeWrite(status -> {
-            return userRepository.save(user);
-        });
+        return transactionManager.executeWrite(status -> userRepository.save(user));
     }
 }
