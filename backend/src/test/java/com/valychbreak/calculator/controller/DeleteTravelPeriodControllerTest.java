@@ -40,15 +40,12 @@ class DeleteTravelPeriodControllerTest {
     @Inject
     private TestAuthTokenProvider authTokenProvider;
 
-    @Inject
-    private ControllerTestDriver controllerTestDriver;
-
     private User user;
 
     @BeforeEach
     void setUp() {
         user = createUser("deleteTravelPeriodUser");
-        controllerTestDriver.performTransactionalWrite(() -> userRepository.save(user));
+        userRepository.save(user);
     }
 
     @Test
@@ -60,7 +57,7 @@ class DeleteTravelPeriodControllerTest {
                 .user(user)
                 .build();
 
-        controllerTestDriver.performTransactionalWrite(() -> travelPeriodRepository.save(travelPeriod));
+        travelPeriodRepository.save(travelPeriod);
 
         HttpRequest<Object> httpRequest = HttpRequest.DELETE(String.format("/period/%s/delete", travelPeriod.getId()))
                 .bearerAuth(authTokenProvider.getToken(user));
@@ -86,7 +83,7 @@ class DeleteTravelPeriodControllerTest {
     @Test
     void shouldReturnNotFoundErrorWhenUserDoesNotOwnTravelPeriod() {
         User anotherUser = createUser("anotherUserDeletePeriod");
-        controllerTestDriver.performTransactionalWrite(() -> userRepository.save(anotherUser));
+        userRepository.save(anotherUser);
 
         TravelPeriod travelPeriod = TravelPeriod.builder()
                 .start(LocalDate.of(2020, 3, 15))
@@ -95,7 +92,7 @@ class DeleteTravelPeriodControllerTest {
                 .user(anotherUser)
                 .build();
 
-        controllerTestDriver.performTransactionalWrite(() -> travelPeriodRepository.save(travelPeriod));
+        travelPeriodRepository.save(travelPeriod);
 
         HttpRequest<Object> httpRequest = HttpRequest.DELETE(String.format("/period/%s/delete", travelPeriod.getId()))
                 .bearerAuth(authTokenProvider.getToken(user));

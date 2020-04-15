@@ -20,7 +20,7 @@ import static com.valychbreak.calculator.utils.TestUtils.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class UserInfoControllerTest {
     @Inject
     @Client("/api")
@@ -65,17 +65,18 @@ class UserInfoControllerTest {
 
     @Test
     void shouldReturnUnauthorizedWhenUserFromTokenDoesNotExist() {
-        User testUser = createUser("testUnauthorized");
-        userRepository.save(testUser);
-
+        // given
+        User testUser = userRepository.save(createUser("testUnauthorized"));
         String token = authTokenProvider.getToken(testUser);
         userRepository.delete(testUser);
 
         HttpRequest<Object> httpRequest = HttpRequest.GET("/user/info").bearerAuth(token);
 
+        // when
         HttpClientResponseException httpClientResponseException = assertThrows(HttpClientResponseException.class,
                 () -> client.toBlocking().exchange(httpRequest));
 
+        // then
         assertThat(httpClientResponseException.getStatus().getCode()).isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
     }
 }

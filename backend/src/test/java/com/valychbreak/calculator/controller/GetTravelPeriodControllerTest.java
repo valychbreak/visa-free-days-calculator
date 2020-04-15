@@ -42,25 +42,20 @@ class GetTravelPeriodControllerTest {
     @Inject
     private TestAuthTokenProvider testAuthTokenProvider;
 
-    @Inject
-    private ControllerTestDriver controllerTestDriver;
-
     @Test
     void shouldReturnAllTravelPeriodsForUser() throws JSONException, JsonProcessingException {
         // given
+        User testUser = userRepository.save(createUser("testTravelPeriods"));
+
         TravelPeriod travelPeriod = TravelPeriod.builder()
                 .start(LocalDate.of(2020, 3, 11))
                 .end(LocalDate.of(2020, 3, 15))
                 .country("Poland")
                 .note("Travel of testUser")
+                .user(testUser)
                 .build();
 
-        User testUser = controllerTestDriver.performTransactionalWrite(() -> {
-            User createdUser = userRepository.save(createUser("testTravelPeriods"));
-            travelPeriod.setUser(createdUser);
-            travelPeriodRepository.save(travelPeriod);
-            return createdUser;
-        });
+        travelPeriodRepository.save(travelPeriod);
 
         String expectedResponse = objectMapper.writeValueAsString(List.of(travelPeriod));
 

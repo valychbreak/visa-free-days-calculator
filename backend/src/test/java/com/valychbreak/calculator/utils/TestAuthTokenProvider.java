@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 @Singleton
 public class TestAuthTokenProvider {
 
-    private AuthenticationClient authClient;
+    private final AuthenticationClient authClient;
 
     public TestAuthTokenProvider(AuthenticationClient authenticationClient) {
         this.authClient = authenticationClient;

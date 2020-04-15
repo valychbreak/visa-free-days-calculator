@@ -40,16 +40,11 @@ class AddTravelPeriodControllerTest {
     @Inject
     private TestAuthTokenProvider authTokenProvider;
 
-    @Inject
-    private ControllerTestDriver controllerTestDriver;
-
     @Test
     void shouldCreateNewPeriod() {
         // given
         TravelPeriodDTO travelPeriodDTO = createTravelPeriodDTO();
-        User user = controllerTestDriver.performTransactionalWrite(
-                () -> userRepository.save(createUser("createNewPeriodUser"))
-        );
+        User user = userRepository.save(createUser("createNewPeriodUser"));
 
         HttpRequest<TravelPeriodDTO> httpRequest = HttpRequest.POST("/period/add", travelPeriodDTO)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
