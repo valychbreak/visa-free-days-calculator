@@ -10,11 +10,12 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(name = "\"user\"")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "user_id_gen", sequenceName = "user_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_gen")
     private Long id;
     private String username;
     private String email;

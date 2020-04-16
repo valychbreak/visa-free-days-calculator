@@ -21,12 +21,22 @@ import java.time.LocalDate;
 public class TravelPeriod {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "travel_period_id_gen", sequenceName = "travel_period_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "travel_period_id_gen")
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate start;
+
+    @Column(name = "\"end\"", nullable = false)
     private LocalDate end;
+
+    @Column(nullable = false)
     private String country;
+
+    @Column(nullable = false)
     private String note;
+
     @ManyToOne
     private User user;
 
