@@ -4,6 +4,7 @@ import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.exception.UserNotFoundException;
 import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.service.authentication.UserService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -20,19 +21,14 @@ import java.util.List;
 @Secured(SecuredAnnotationRule.IS_AUTHENTICATED)
 public class GetTravelPeriodController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public GetTravelPeriodController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public GetTravelPeriodController(UserService userService) {
+        this.userService = userService;
     }
 
     @Get("/period/all")
-    @Transactional
     public HttpResponse<Collection<TravelPeriod>> getAllUserTravelPeriods(Principal principal) {
-        List<TravelPeriod> travelPeriods = userRepository.findByUsername(principal.getName())
-                .orElseThrow(UserNotFoundException::new)
-                .getTravelPeriods();
-
-        return HttpResponse.ok(new ArrayList<>(travelPeriods));
+        return HttpResponse.ok(new ArrayList<>(userService.getUserTravelPeriods(principal.getName())));
     }
 }
