@@ -2,6 +2,7 @@ package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.utils.DatabaseHelper;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -11,6 +12,7 @@ import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.annotation.MicronautTest;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -26,6 +28,14 @@ class CreateTemporaryUserControllerTest {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private DatabaseHelper databaseHelper;
+
+    @BeforeEach
+    void setUp() {
+        databaseHelper.cleanupEverything();
+    }
 
     @Test
     void shouldCreateTemporaryUser() {

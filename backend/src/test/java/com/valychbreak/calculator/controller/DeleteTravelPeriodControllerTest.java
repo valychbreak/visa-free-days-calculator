@@ -13,6 +13,7 @@ import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +46,11 @@ class DeleteTravelPeriodControllerTest {
     void setUp() {
         user = createUser("deleteTravelPeriodUser");
         userRepository.save(user);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userRepository.delete(user);
     }
 
     @Test

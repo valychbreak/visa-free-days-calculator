@@ -14,7 +14,7 @@ public class TestUtils {
         User user = new User();
         user.setUsername(username);
         user.setPassword("test");
-        user.setEmail("t@t.com");
+        user.setEmail(username + "@t.com");
         user.setTravelPeriods(travelPeriodList);
         return user;
     }

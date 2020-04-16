@@ -4,6 +4,7 @@ package com.valychbreak.calculator.controller.user;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.domain.dto.UserDto;
 import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.utils.DatabaseHelper;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -12,6 +13,7 @@ import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -32,9 +34,17 @@ class UserInfoControllerTest {
     @Inject
     private TestAuthTokenProvider authTokenProvider;
 
+    @Inject
+    private DatabaseHelper databaseHelper;
+
+    @AfterEach
+    void tearDown() {
+        databaseHelper.cleanupEverything();
+    }
+
     @Test
     void shouldReturnUserInfo() {
-        User testUser = createUser("testTravelPeriods");
+        User testUser = createUser("testUserInfo");
         testUser.setTemporary(true);
         userRepository.save(testUser);
 
