@@ -5,7 +5,6 @@ import com.valychbreak.calculator.domain.TravelPeriodDTO;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.repository.UserRepository;
-import com.valychbreak.calculator.utils.ControllerTestDriver;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
