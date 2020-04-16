@@ -28,7 +28,7 @@ create table "travel_period"
     start date not null,
     "end" date not null,
     country varchar(32) not null,
-    note varchar(255) not null,
+    note varchar(255),
     user_id bigint not null,
 
     constraint travel_period_pkey primary key (id),
