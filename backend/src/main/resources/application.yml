@@ -1,10 +1,11 @@
 datasources:
   default:
-    url: jdbc:h2:mem:devDb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-    dialect: H2
+    url: jdbc:postgresql://localhost:5432/visa-calculator-db-test
+    driverClassName: org.postgresql.Driver
+    username: visa_calc_user
+    password: test12
+    maximumPoolSize: 10
+    maxActive: 10
 
 jpa:
   default:
@@ -13,7 +14,7 @@ jpa:
     properties:
       hibernate:
         hbm2ddl:
-          auto: create
+          auto: none
         show_sql: true
 
 micronaut:
