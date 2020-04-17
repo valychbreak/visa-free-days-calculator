@@ -55,3 +55,8 @@ micronaut:
               secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
               base64: true
               jws-algorithm: HS256
+
+endpoints:
+  health:
+    jdbc:
+      enabled: false
