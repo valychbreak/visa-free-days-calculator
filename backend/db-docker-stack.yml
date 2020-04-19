@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+
+  postgres:
+    image: postgres:11.7
+    volumes:
+      - $HOME/.docker-image-data/postgresql/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - 3333:80
+    volumes:
+      - $HOME/.docker-image-data/pgadmin:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin

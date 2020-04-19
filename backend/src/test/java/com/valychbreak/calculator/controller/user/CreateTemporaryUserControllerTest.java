@@ -2,6 +2,7 @@ package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.utils.DatabaseHelper;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -11,10 +12,10 @@ import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.annotation.MicronautTest;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,6 +29,14 @@ class CreateTemporaryUserControllerTest {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private DatabaseHelper databaseHelper;
+
+    @BeforeEach
+    void setUp() {
+        databaseHelper.cleanupEverything();
+    }
+
     @Test
     void shouldCreateTemporaryUser() {
         MutableHttpRequest<String> httpRequest = HttpRequest.GET("/user/temporary");
@@ -36,7 +45,7 @@ class CreateTemporaryUserControllerTest {
 
         assertThat(response.code()).isEqualTo(HttpStatus.OK.getCode());
 
-        Collection<User> users = userRepository.findAll();
+        Iterable<User> users = userRepository.findAll();
         assertThat(users).hasSize(1);
 
         User user = users.iterator().next();

@@ -1,3 +1,22 @@
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/visa-calculator-db-test
+    driverClassName: org.postgresql.Driver
+    username: visa_calc_user
+    password: test12
+    maximumPoolSize: 10
+    maxActive: 10
+
+jpa:
+  default:
+    entity-scan:
+      packages: 'com.valychbreak.calculator'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: true
+
 micronaut:
   application:
     name: backend
@@ -36,3 +55,8 @@ micronaut:
               secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
               base64: true
               jws-algorithm: HS256
+
+endpoints:
+  health:
+    jdbc:
+      enabled: false

@@ -4,6 +4,7 @@ package com.valychbreak.calculator.controller.user;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.domain.dto.UserDto;
 import com.valychbreak.calculator.repository.UserRepository;
+import com.valychbreak.calculator.utils.DatabaseHelper;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -12,6 +13,7 @@ import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -20,7 +22,7 @@ import static com.valychbreak.calculator.utils.TestUtils.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class UserInfoControllerTest {
     @Inject
     @Client("/api")
@@ -32,9 +34,17 @@ class UserInfoControllerTest {
     @Inject
     private TestAuthTokenProvider authTokenProvider;
 
+    @Inject
+    private DatabaseHelper databaseHelper;
+
+    @AfterEach
+    void tearDown() {
+        databaseHelper.cleanupEverything();
+    }
+
     @Test
     void shouldReturnUserInfo() {
-        User testUser = createUser("testTravelPeriods");
+        User testUser = createUser("testUserInfo");
         testUser.setTemporary(true);
         userRepository.save(testUser);
 
@@ -65,17 +75,18 @@ class UserInfoControllerTest {
 
     @Test
     void shouldReturnUnauthorizedWhenUserFromTokenDoesNotExist() {
-        User testUser = createUser("testUnauthorized");
-        userRepository.save(testUser);
-
+        // given
+        User testUser = userRepository.save(createUser("testUnauthorized"));
         String token = authTokenProvider.getToken(testUser);
-        userRepository.remove(testUser);
+        userRepository.delete(testUser);
 
         HttpRequest<Object> httpRequest = HttpRequest.GET("/user/info").bearerAuth(token);
 
+        // when
         HttpClientResponseException httpClientResponseException = assertThrows(HttpClientResponseException.class,
                 () -> client.toBlocking().exchange(httpRequest));
 
+        // then
         assertThat(httpClientResponseException.getStatus().getCode()).isEqualTo(HttpStatus.UNAUTHORIZED.getCode());
     }
 }

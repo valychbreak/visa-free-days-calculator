@@ -13,6 +13,7 @@ import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ import static com.valychbreak.calculator.utils.TestUtils.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class DeleteTravelPeriodControllerTest {
 
     @Inject
@@ -47,6 +48,11 @@ class DeleteTravelPeriodControllerTest {
         userRepository.save(user);
     }
 
+    @AfterEach
+    void tearDown() {
+        userRepository.delete(user);
+    }
+
     @Test
     void shouldDeleteTravelPeriod() {
         TravelPeriod travelPeriod = TravelPeriod.builder()
@@ -65,11 +71,6 @@ class DeleteTravelPeriodControllerTest {
         assertThat(httpResponse.code()).isEqualTo(HttpStatus.OK.getCode());
 
         assertThat(travelPeriodRepository.findById(travelPeriod.getId())).isEmpty();
-
-        User loadedUser = userRepository.findByUsername(this.user.getUsername()).get();
-        assertThat(loadedUser.getTravelPeriods())
-                .extracting("id")
-                .doesNotContain(travelPeriod.getId());
     }
 
     @Test

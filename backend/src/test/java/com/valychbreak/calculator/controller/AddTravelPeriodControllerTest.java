@@ -1,11 +1,15 @@
 package com.valychbreak.calculator.controller;
 
+import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.TravelPeriodDTO;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.repository.UserRepository;
 import com.valychbreak.calculator.utils.TestAuthTokenProvider;
-import io.micronaut.http.*;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
@@ -13,12 +17,13 @@ import io.micronaut.test.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 import static com.valychbreak.calculator.utils.TestUtils.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@MicronautTest
+@MicronautTest(transactional = false)
 class AddTravelPeriodControllerTest {
 
     @Inject
@@ -26,37 +31,36 @@ class AddTravelPeriodControllerTest {
     private RxHttpClient client;
 
     @Inject
-    private TravelPeriodRepository travelPeriodRepository;
+    private UserRepository userRepository;
 
     @Inject
-    private UserRepository userRepository;
+    private TravelPeriodRepository travelPeriodRepository;
 
     @Inject
     private TestAuthTokenProvider authTokenProvider;
 
     @Test
     void shouldCreateNewPeriod() {
+        // given
         TravelPeriodDTO travelPeriodDTO = createTravelPeriodDTO();
+        User user = userRepository.save(createUser("createNewPeriodUser"));
 
-        User user = createUser("createNewPeriodUser");
-        userRepository.save(user);
-
-        MutableHttpRequest<TravelPeriodDTO> httpRequest = HttpRequest.POST("/period/add", travelPeriodDTO)
+        HttpRequest<TravelPeriodDTO> httpRequest = HttpRequest.POST("/period/add", travelPeriodDTO)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
                 .bearerAuth(authTokenProvider.getToken(user));
 
+        // when
         HttpResponse<TravelPeriodDTO> response = client.toBlocking()
                 .exchange(httpRequest, TravelPeriodDTO.class);
 
+        // then
         TravelPeriodDTO actualTravelPeriod = response.getBody().orElseThrow();
         assertThat(actualTravelPeriod.getId()).isNotNull();
         assertThat(actualTravelPeriod).isEqualToIgnoringGivenFields(travelPeriodDTO, "id");
 
-        assertThat(travelPeriodRepository.findById(actualTravelPeriod.getId())).isPresent();
-        assertThat(userRepository.findByUsername(user.getUsername()).orElseThrow()
-                .getTravelPeriods()
-        ).extracting("id")
-                .contains(actualTravelPeriod.getId());
+        Optional<TravelPeriod> addedTravelPeriod = travelPeriodRepository.findById(actualTravelPeriod.getId());
+        assertThat(addedTravelPeriod).isPresent();
+        assertThat(addedTravelPeriod.get().getUser().getUsername()).isEqualTo(user.getUsername());
     }
 
     @Test

@@ -5,20 +5,39 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @JsonDeserialize(builder = TravelPeriod.TravelPeriodBuilder.class)
 @JsonIgnoreProperties("user")
 @Getter
 @Setter
+@Entity
+@Table
+@NoArgsConstructor
 public class TravelPeriod {
+
+    @Id
+    @SequenceGenerator(name = "travel_period_id_gen", sequenceName = "travel_period_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "travel_period_id_gen")
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate start;
+
+    @Column(name = "\"end\"", nullable = false)
     private LocalDate end;
+
+    @Column(nullable = false)
     private String country;
+
+    @Column
     private String note;
+
+    @ManyToOne
     private User user;
 
     @Builder

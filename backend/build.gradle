@@ -1,6 +1,7 @@
 plugins {
     id "net.ltgt.apt-eclipse" version "0.21"
     id "com.github.johnrengelman.shadow" version "5.2.0"
+    id "org.flywaydb.flyway" version "6.3.3"
     id "application"
 }
 
@@ -39,6 +40,11 @@ dependencies {
     implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut:micronaut-http-client"
     implementation "io.micronaut:micronaut-security-jwt"
+
+    annotationProcessor "io.micronaut.data:micronaut-data-processor:1.0.2"
+    implementation "io.micronaut.data:micronaut-data-hibernate-jpa:1.0.2"
+    implementation "io.micronaut.configuration:micronaut-jdbc-hikari"
+    runtimeOnly "org.postgresql:postgresql:42.2.12"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
     compile 'org.apache.commons:commons-lang3:3.10'
@@ -49,6 +55,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "io.micronaut.test:micronaut-test-junit5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testRuntimeOnly "com.h2database:h2"
 
     testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.15.0'
