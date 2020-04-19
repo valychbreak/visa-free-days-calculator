@@ -19,6 +19,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // TODO: remove transactional, and move travel period loading logic to repository
     @Transactional
     public Collection<TravelPeriod> getUserTravelPeriods(String username) {
         List<TravelPeriod> travelPeriods = userRepository.findByUsername(username)
