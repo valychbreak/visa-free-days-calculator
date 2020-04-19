@@ -17,9 +17,17 @@ public class User {
     @SequenceGenerator(name = "user_id_gen", sequenceName = "user_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_gen")
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private boolean isTemporary;
 
     @OneToMany(mappedBy = "user")
