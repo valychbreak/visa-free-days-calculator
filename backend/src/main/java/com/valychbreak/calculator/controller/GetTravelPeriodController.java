@@ -1,8 +1,10 @@
 package com.valychbreak.calculator.controller;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
+import com.valychbreak.calculator.exception.UserNotFoundException;
+import com.valychbreak.calculator.repository.TravelPeriodRepository;
+import com.valychbreak.calculator.repository.UserRepository;
 import com.valychbreak.calculator.service.authentication.AsyncRepositoryCallExecutor;
-import com.valychbreak.calculator.service.authentication.UserService;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
@@ -15,18 +17,23 @@ import java.security.Principal;
 @Secured(SecuredAnnotationRule.IS_AUTHENTICATED)
 public class GetTravelPeriodController {
 
-    private final UserService userService;
     private final AsyncRepositoryCallExecutor asyncRepositoryCallExecutor;
+    private final UserRepository userRepository;
+    private final TravelPeriodRepository travelPeriodRepository;
 
-    public GetTravelPeriodController(UserService userService,
-                                     AsyncRepositoryCallExecutor asyncRepositoryCallExecutor) {
-        this.userService = userService;
+    public GetTravelPeriodController(AsyncRepositoryCallExecutor asyncRepositoryCallExecutor,
+                                     UserRepository userRepository,
+                                     TravelPeriodRepository travelPeriodRepository) {
         this.asyncRepositoryCallExecutor = asyncRepositoryCallExecutor;
+        this.userRepository = userRepository;
+        this.travelPeriodRepository = travelPeriodRepository;
     }
 
     @Get("/period/all")
     public Flux<TravelPeriod> getAllUserTravelPeriods(Principal principal) {
-        return asyncRepositoryCallExecutor.async(() -> userService.getUserTravelPeriods(principal.getName()))
+        return asyncRepositoryCallExecutor.async(() -> userRepository.findByUsername(principal.getName()))
+                .map(optionalUser -> optionalUser.orElseThrow(UserNotFoundException::new))
+                .map(travelPeriodRepository::findByUser)
                 .flatMapMany(Flux::fromIterable);
     }
 }

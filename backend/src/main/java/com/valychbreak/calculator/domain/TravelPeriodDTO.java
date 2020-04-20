@@ -4,6 +4,8 @@ import io.micronaut.core.annotation.Introspected;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.format.DateTimeFormatter;
+
 
 @Getter
 @Setter
@@ -20,5 +22,13 @@ public class TravelPeriodDTO {
 
     public TravelPeriodDTO() {
 
+    }
+
+    public TravelPeriodDTO(TravelPeriod travelPeriod) {
+        this.setId(travelPeriod.getId());
+        this.setStart(travelPeriod.getStart().format(DateTimeFormatter.ISO_DATE));
+        this.setEnd(travelPeriod.getEnd().format(DateTimeFormatter.ISO_DATE));
+        this.setCountry(travelPeriod.getCountry());
+        this.setNote(travelPeriod.getNote());
     }
 }

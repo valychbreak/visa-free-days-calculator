@@ -40,6 +40,14 @@ public class TravelPeriod {
     @ManyToOne
     private User user;
 
+    public static TravelPeriodBuilder from(TravelPeriodDTO travelPeriodDTO) {
+        return TravelPeriod.builder()
+                .start(LocalDate.parse(travelPeriodDTO.getStart()))
+                .end(LocalDate.parse(travelPeriodDTO.getEnd()))
+                .country(travelPeriodDTO.getCountry())
+                .note(travelPeriodDTO.getNote());
+    }
+
     @Builder
     private TravelPeriod(Long id, LocalDate start, LocalDate end, String country, String note, User user) {
         this.id = id;
