@@ -43,7 +43,7 @@ public class AddTravelPeriodController {
                 .zipWith(asyncRepositoryCallExecutor.async(() -> findUserBy(principal)),
                         TravelPeriodBuilder::user)
                 .map(TravelPeriodBuilder::build)
-                .map(travelPeriodRepository::save)
+                .doOnNext(travelPeriodRepository::save)
                 .map(TravelPeriodDTO::new);
     }
 
