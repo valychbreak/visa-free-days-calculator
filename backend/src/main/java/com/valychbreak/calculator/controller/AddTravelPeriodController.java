@@ -3,11 +3,8 @@ package com.valychbreak.calculator.controller;
 import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.TravelPeriod.TravelPeriodBuilder;
 import com.valychbreak.calculator.domain.TravelPeriodDTO;
-import com.valychbreak.calculator.domain.User;
-import com.valychbreak.calculator.exception.UserNotFoundException;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
-import com.valychbreak.calculator.repository.UserRepository;
-import com.valychbreak.calculator.service.authentication.AsyncRepositoryCallExecutor;
+import com.valychbreak.calculator.service.UserReactiveService;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
@@ -16,23 +13,19 @@ import reactor.core.publisher.Mono;
 
 import javax.inject.Inject;
 import java.security.Principal;
-import java.time.format.DateTimeFormatter;
 
 @Controller("/api")
 @Secured(SecuredAnnotationRule.IS_AUTHENTICATED)
 public class AddTravelPeriodController {
 
     private final TravelPeriodRepository travelPeriodRepository;
-    private final UserRepository userRepository;
-    private final AsyncRepositoryCallExecutor asyncRepositoryCallExecutor;
+    private final UserReactiveService userReactiveService;
 
     @Inject
     public AddTravelPeriodController(TravelPeriodRepository travelPeriodRepository,
-                                     UserRepository userRepository,
-                                     AsyncRepositoryCallExecutor asyncRepositoryCallExecutor) {
+                                     UserReactiveService userReactiveService) {
         this.travelPeriodRepository = travelPeriodRepository;
-        this.userRepository = userRepository;
-        this.asyncRepositoryCallExecutor = asyncRepositoryCallExecutor;
+        this.userReactiveService = userReactiveService;
     }
 
     @Post(value = "/period/add")
@@ -40,16 +33,10 @@ public class AddTravelPeriodController {
     @Produces(MediaType.APPLICATION_JSON)
     public Mono<TravelPeriodDTO> addNewPeriod(@Body TravelPeriodDTO travelPeriodDTO, Principal principal) {
         return Mono.just(TravelPeriod.from(travelPeriodDTO))
-                .zipWith(asyncRepositoryCallExecutor.async(() -> findUserBy(principal)),
-                        TravelPeriodBuilder::user)
+                .zipWith(userReactiveService.findUserBy(principal), TravelPeriodBuilder::user)
                 .map(TravelPeriodBuilder::build)
                 .doOnNext(travelPeriodRepository::save)
                 .map(TravelPeriodDTO::new);
-    }
-
-    private User findUserBy(Principal principal) {
-        return userRepository.findByUsername(principal.getName())
-                .orElseThrow(UserNotFoundException::new);
     }
 
 }
