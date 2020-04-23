@@ -34,7 +34,7 @@ public class AddTravelPeriodController {
         return Mono.just(TravelPeriod.from(travelPeriodDTO))
                 .zipWith(userReactiveService.findUserBy(principal), TravelPeriodBuilder::user)
                 .map(TravelPeriodBuilder::build)
-                .doOnNext(travelPeriodService::delete)
+                .flatMap(travelPeriodService::save)
                 .map(TravelPeriodDTO::new);
     }
 
