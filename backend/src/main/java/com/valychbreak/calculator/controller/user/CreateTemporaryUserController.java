@@ -18,8 +18,8 @@ import javax.inject.Inject;
 @PermitAll
 public class CreateTemporaryUserController {
 
-    private TemporaryUserService temporaryUserService;
-    private AuthenticationClient authenticationClient;
+    private final TemporaryUserService temporaryUserService;
+    private final AuthenticationClient authenticationClient;
 
     @Inject
     public CreateTemporaryUserController(TemporaryUserService temporaryUserService,
