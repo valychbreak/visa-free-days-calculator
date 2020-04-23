@@ -27,7 +27,7 @@ public class DeleteTravelPeriodController {
     public Mono<? extends HttpResponse<Object>> deleteTravelPeriod(Long id, Principal principal) {
         return travelPeriodService.findTravelPeriodById(id)
                 .filter(travelPeriod -> hasRightsToRemove(principal, travelPeriod))
-                .doOnNext(travelPeriodService::delete)
+                .flatMap(travelPeriodService::delete)
                 .map(travelPeriod -> HttpResponse.ok())
                 .switchIfEmpty(Mono.just(HttpResponse.notFound()));
     }

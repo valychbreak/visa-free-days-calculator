@@ -33,7 +33,10 @@ public class TravelPeriodService {
         return asyncRepositoryCallExecutor.async(() -> travelPeriodRepository.save(travelPeriod));
     }
 
-    public void delete(TravelPeriod travelPeriod) {
-        asyncRepositoryCallExecutor.async(() -> travelPeriodRepository.delete(travelPeriod)).subscribe();
+    public Mono<TravelPeriod> delete(TravelPeriod travelPeriod) {
+        return asyncRepositoryCallExecutor.async(() -> {
+            travelPeriodRepository.delete(travelPeriod);
+            return travelPeriod;
+        });
     }
 }
