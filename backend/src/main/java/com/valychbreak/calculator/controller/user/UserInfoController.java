@@ -30,7 +30,7 @@ public class UserInfoController {
     public Mono<UserDto> getUserInfo(Principal principal) {
         return userService.findUserBy(principal)
                 .flatMap(Mono::justOrEmpty)
-                .map(UserDto::new)
+                .map(UserDto::from)
                 .switchIfEmpty(Mono.error(UserNotFoundException::new));
     }
 }

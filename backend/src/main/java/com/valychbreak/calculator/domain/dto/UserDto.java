@@ -16,10 +16,12 @@ public class UserDto {
     private String email;
     private boolean isTemporary;
 
-    public UserDto(User user) {
-        this.setId(user.getId());
-        this.setEmail(user.getEmail());
-        this.setUsername(user.getUsername());
-        this.setTemporary(user.isTemporary());
+    public static UserDto from(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setUsername(user.getUsername());
+        userDto.setTemporary(user.isTemporary());
+        return userDto;
     }
 }
