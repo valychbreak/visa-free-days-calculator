@@ -28,4 +28,8 @@ public class UserReactiveService {
                 .flatMap(Mono::justOrEmpty)
                 .switchIfEmpty(Mono.error(UserNotFoundException::new));
     }
+
+    public void delete(User user) {
+        userRepository.delete(user);
+    }
 }

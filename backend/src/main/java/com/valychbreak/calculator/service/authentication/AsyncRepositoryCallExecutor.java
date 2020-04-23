@@ -19,4 +19,9 @@ public class AsyncRepositoryCallExecutor {
         return Mono.fromCallable(callable)
                 .subscribeOn(jdbcPoolScheduler);
     }
+
+    public <T> Mono<Object> async(Runnable runnable) {
+        return Mono.fromRunnable(runnable)
+                .subscribeOn(jdbcPoolScheduler);
+    }
 }

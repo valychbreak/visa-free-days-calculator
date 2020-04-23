@@ -1,7 +1,6 @@
 package com.valychbreak.calculator.controller;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
-import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.service.TravelPeriodService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
@@ -17,12 +16,10 @@ import java.security.Principal;
 @Secured(SecuredAnnotationRule.IS_AUTHENTICATED)
 public class DeleteTravelPeriodController {
 
-    private final TravelPeriodRepository travelPeriodRepository;
     private final TravelPeriodService travelPeriodService;
 
     @Inject
-    public DeleteTravelPeriodController(TravelPeriodRepository travelPeriodRepository, TravelPeriodService travelPeriodService) {
-        this.travelPeriodRepository = travelPeriodRepository;
+    public DeleteTravelPeriodController(TravelPeriodService travelPeriodService) {
         this.travelPeriodService = travelPeriodService;
     }
 
@@ -30,7 +27,7 @@ public class DeleteTravelPeriodController {
     public Mono<? extends HttpResponse<Object>> deleteTravelPeriod(Long id, Principal principal) {
         return travelPeriodService.findTravelPeriodById(id)
                 .filter(travelPeriod -> hasRightsToRemove(principal, travelPeriod))
-                .doOnNext(travelPeriodRepository::delete)
+                .doOnNext(travelPeriodService::delete)
                 .map(travelPeriod -> HttpResponse.ok())
                 .switchIfEmpty(Mono.just(HttpResponse.notFound()));
     }

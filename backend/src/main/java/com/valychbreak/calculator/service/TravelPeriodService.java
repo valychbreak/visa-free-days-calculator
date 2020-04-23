@@ -1,8 +1,10 @@
 package com.valychbreak.calculator.service;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
+import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.service.authentication.AsyncRepositoryCallExecutor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.inject.Singleton;
@@ -20,5 +22,18 @@ public class TravelPeriodService {
     public Mono<TravelPeriod> findTravelPeriodById(Long id) {
         return asyncRepositoryCallExecutor.async(() -> travelPeriodRepository.findById(id))
                 .flatMap(Mono::justOrEmpty);
+    }
+
+    public Flux<TravelPeriod> findByUser(User user) {
+        return asyncRepositoryCallExecutor.async(() -> travelPeriodRepository.findByUser(user))
+                .flatMapMany(Flux::fromIterable);
+    }
+
+    public Mono<TravelPeriod> save(TravelPeriod travelPeriod) {
+        return asyncRepositoryCallExecutor.async(() -> travelPeriodRepository.save(travelPeriod));
+    }
+
+    public void delete(TravelPeriod travelPeriod) {
+        asyncRepositoryCallExecutor.async(() -> travelPeriodRepository.delete(travelPeriod)).subscribe();
     }
 }
