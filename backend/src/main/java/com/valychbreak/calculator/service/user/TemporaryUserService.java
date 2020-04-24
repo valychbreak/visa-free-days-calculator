@@ -1,4 +1,4 @@
-package com.valychbreak.calculator.service.authentication;
+package com.valychbreak.calculator.service.user;
 
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.UserRepository;

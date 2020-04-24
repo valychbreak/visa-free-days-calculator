@@ -1,8 +1,7 @@
 package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.controller.AuthenticationClient;
-import com.valychbreak.calculator.domain.User;
-import com.valychbreak.calculator.service.authentication.TemporaryUserService;
+import com.valychbreak.calculator.service.user.TemporaryUserService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;

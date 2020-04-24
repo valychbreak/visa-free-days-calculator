@@ -3,7 +3,6 @@ package com.valychbreak.calculator.service;
 import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
-import com.valychbreak.calculator.service.authentication.AsyncRepositoryCallExecutor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

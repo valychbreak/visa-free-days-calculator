@@ -2,7 +2,7 @@ package com.valychbreak.calculator.controller;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.service.TravelPeriodService;
-import com.valychbreak.calculator.service.UserReactiveService;
+import com.valychbreak.calculator.service.user.UserReactiveService;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;

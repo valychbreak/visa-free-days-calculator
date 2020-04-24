@@ -1,4 +1,4 @@
-package com.valychbreak.calculator.service.authentication;
+package com.valychbreak.calculator.service;
 
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;

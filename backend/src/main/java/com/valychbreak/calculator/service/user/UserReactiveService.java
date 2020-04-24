@@ -1,9 +1,9 @@
-package com.valychbreak.calculator.service;
+package com.valychbreak.calculator.service.user;
 
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.exception.UserNotFoundException;
 import com.valychbreak.calculator.repository.UserRepository;
-import com.valychbreak.calculator.service.authentication.AsyncRepositoryCallExecutor;
+import com.valychbreak.calculator.service.AsyncRepositoryCallExecutor;
 import reactor.core.publisher.Mono;
 
 import javax.inject.Singleton;

@@ -2,7 +2,7 @@ package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.domain.dto.UserDto;
 import com.valychbreak.calculator.exception.UserNotFoundException;
-import com.valychbreak.calculator.service.UserReactiveService;
+import com.valychbreak.calculator.service.user.UserReactiveService;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
