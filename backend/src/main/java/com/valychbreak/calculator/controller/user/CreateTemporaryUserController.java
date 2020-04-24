@@ -30,9 +30,9 @@ public class CreateTemporaryUserController {
 
     @Get("/user/temporary")
     @Produces(MediaType.APPLICATION_JSON)
-    public Single<HttpResponse<AccessRefreshToken>> createTemporaryUser() {
-        User temporaryUser = temporaryUserService.create();
-        return authenticationClient.requestToken(temporaryUser.getUsername(), temporaryUser.getPassword())
+    public Single<? extends HttpResponse<AccessRefreshToken>> createTemporaryUser() {
+        return Single.fromCallable(temporaryUserService::create)
+                .flatMap(temporaryUser -> authenticationClient.requestToken(temporaryUser.getUsername(), temporaryUser.getPassword()))
                 .map(HttpResponse::ok);
     }
 }
