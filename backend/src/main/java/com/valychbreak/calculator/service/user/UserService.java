@@ -10,11 +10,11 @@ import javax.inject.Singleton;
 import java.security.Principal;
 
 @Singleton
-public class UserReactiveService {
+public class UserService {
     private final UserRepository userRepository;
     private final AsyncRepositoryCallExecutor asyncRepositoryCallExecutor;
 
-    public UserReactiveService(UserRepository userRepository, AsyncRepositoryCallExecutor asyncRepositoryCallExecutor) {
+    public UserService(UserRepository userRepository, AsyncRepositoryCallExecutor asyncRepositoryCallExecutor) {
         this.userRepository = userRepository;
         this.asyncRepositoryCallExecutor = asyncRepositoryCallExecutor;
     }

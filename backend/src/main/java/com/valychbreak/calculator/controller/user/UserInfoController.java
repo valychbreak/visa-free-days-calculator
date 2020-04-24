@@ -2,7 +2,7 @@ package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.domain.dto.UserDto;
 import com.valychbreak.calculator.exception.UserNotFoundException;
-import com.valychbreak.calculator.service.user.UserReactiveService;
+import com.valychbreak.calculator.service.user.UserService;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -18,10 +18,10 @@ import java.security.Principal;
 @Secured(SecuredAnnotationRule.IS_AUTHENTICATED)
 public class UserInfoController {
 
-    private final UserReactiveService userService;
+    private final UserService userService;
 
     @Inject
-    public UserInfoController(UserReactiveService userService) {
+    public UserInfoController(UserService userService) {
         this.userService = userService;
     }
 

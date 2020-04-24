@@ -4,7 +4,7 @@ import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.TravelPeriod.TravelPeriodBuilder;
 import com.valychbreak.calculator.domain.TravelPeriodDTO;
 import com.valychbreak.calculator.service.TravelPeriodService;
-import com.valychbreak.calculator.service.user.UserReactiveService;
+import com.valychbreak.calculator.service.user.UserService;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
@@ -18,12 +18,12 @@ import java.security.Principal;
 @Secured(SecuredAnnotationRule.IS_AUTHENTICATED)
 public class AddTravelPeriodController {
 
-    private final UserReactiveService userReactiveService;
+    private final UserService userService;
     private final TravelPeriodService travelPeriodService;
 
     @Inject
-    public AddTravelPeriodController(UserReactiveService userReactiveService, TravelPeriodService travelPeriodService) {
-        this.userReactiveService = userReactiveService;
+    public AddTravelPeriodController(UserService userService, TravelPeriodService travelPeriodService) {
+        this.userService = userService;
         this.travelPeriodService = travelPeriodService;
     }
 
@@ -32,7 +32,7 @@ public class AddTravelPeriodController {
     @Produces(MediaType.APPLICATION_JSON)
     public Mono<TravelPeriodDTO> addNewPeriod(@Body TravelPeriodDTO travelPeriodDTO, Principal principal) {
         return Mono.just(TravelPeriod.from(travelPeriodDTO))
-                .zipWith(userReactiveService.findUserBy(principal), TravelPeriodBuilder::user)
+                .zipWith(userService.findUserBy(principal), TravelPeriodBuilder::user)
                 .map(TravelPeriodBuilder::build)
                 .flatMap(travelPeriodService::save)
                 .map(TravelPeriodDTO::new);
