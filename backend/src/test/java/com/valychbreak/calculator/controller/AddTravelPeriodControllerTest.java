@@ -1,7 +1,7 @@
 package com.valychbreak.calculator.controller;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
-import com.valychbreak.calculator.domain.TravelPeriodDTO;
+import com.valychbreak.calculator.domain.dto.TravelPeriodDTO;
 import com.valychbreak.calculator.domain.User;
 import com.valychbreak.calculator.repository.TravelPeriodRepository;
 import com.valychbreak.calculator.repository.UserRepository;

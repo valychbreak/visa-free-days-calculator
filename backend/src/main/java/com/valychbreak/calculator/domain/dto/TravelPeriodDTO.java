@@ -1,5 +1,6 @@
-package com.valychbreak.calculator.domain;
+package com.valychbreak.calculator.domain.dto;
 
+import com.valychbreak.calculator.domain.TravelPeriod;
 import io.micronaut.core.annotation.Introspected;
 import lombok.Getter;
 import lombok.Setter;

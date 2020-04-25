@@ -3,6 +3,7 @@ package com.valychbreak.calculator.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.valychbreak.calculator.domain.dto.TravelPeriodDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

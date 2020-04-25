@@ -2,7 +2,7 @@ package com.valychbreak.calculator.controller;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
 import com.valychbreak.calculator.domain.TravelPeriod.TravelPeriodBuilder;
-import com.valychbreak.calculator.domain.TravelPeriodDTO;
+import com.valychbreak.calculator.domain.dto.TravelPeriodDTO;
 import com.valychbreak.calculator.service.TravelPeriodService;
 import com.valychbreak.calculator.service.user.UserService;
 import io.micronaut.http.MediaType;
