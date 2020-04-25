@@ -41,14 +41,13 @@ class NotFoundControllerTest {
     }
 
     @Test
-    @Disabled("At the point of running tests, there's no client resources are build")
     void shouldForwardPathResolvingToClient() throws IOException {
         HttpRequest<?> notExistingApiRequest = HttpRequest.GET("/some-not-existing-path");
         String response = client.toBlocking().retrieve(notExistingApiRequest);
 
         URL clientIndexFile = resourceResolver.getResource("classpath:public/index.html").orElseThrow();
         String expectedResponse = Files.lines(Path.of(clientIndexFile.getPath()))
-                .collect(Collectors.joining());
+                .collect(Collectors.joining("\n"));
 
         assertThat(response).isEqualTo(expectedResponse);
     }

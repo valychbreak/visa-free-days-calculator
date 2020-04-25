@@ -1,12 +1,13 @@
 package com.valychbreak.calculator.controller;
 
 import com.valychbreak.calculator.domain.TravelPeriod;
-import com.valychbreak.calculator.service.authentication.UserService;
+import com.valychbreak.calculator.service.TravelPeriodService;
+import com.valychbreak.calculator.service.user.UserService;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecuredAnnotationRule;
-import io.reactivex.Flowable;
+import reactor.core.publisher.Flux;
 
 import java.security.Principal;
 
@@ -15,13 +16,16 @@ import java.security.Principal;
 public class GetTravelPeriodController {
 
     private final UserService userService;
+    private final TravelPeriodService travelPeriodService;
 
-    public GetTravelPeriodController(UserService userService) {
+    public GetTravelPeriodController(UserService userService, TravelPeriodService travelPeriodService) {
         this.userService = userService;
+        this.travelPeriodService = travelPeriodService;
     }
 
     @Get("/period/all")
-    public Flowable<TravelPeriod> getAllUserTravelPeriods(Principal principal) {
-        return Flowable.fromIterable(userService.getUserTravelPeriods(principal.getName()));
+    public Flux<TravelPeriod> getAllUserTravelPeriods(Principal principal) {
+        return userService.findUserBy(principal)
+                .flatMapMany(travelPeriodService::findByUser);
     }
 }

@@ -1,7 +1,9 @@
 package com.valychbreak.calculator.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "\"user\"")
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = {"travelPeriods", "password"})
 public class User {
 
     @Id

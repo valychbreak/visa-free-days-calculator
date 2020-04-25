@@ -1,8 +1,7 @@
 package com.valychbreak.calculator.controller.user;
 
 import com.valychbreak.calculator.controller.AuthenticationClient;
-import com.valychbreak.calculator.domain.User;
-import com.valychbreak.calculator.service.authentication.TemporaryUserService;
+import com.valychbreak.calculator.service.user.TemporaryUserService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -18,8 +17,8 @@ import javax.inject.Inject;
 @PermitAll
 public class CreateTemporaryUserController {
 
-    private TemporaryUserService temporaryUserService;
-    private AuthenticationClient authenticationClient;
+    private final TemporaryUserService temporaryUserService;
+    private final AuthenticationClient authenticationClient;
 
     @Inject
     public CreateTemporaryUserController(TemporaryUserService temporaryUserService,
@@ -30,9 +29,9 @@ public class CreateTemporaryUserController {
 
     @Get("/user/temporary")
     @Produces(MediaType.APPLICATION_JSON)
-    public Single<HttpResponse<AccessRefreshToken>> createTemporaryUser() {
-        User temporaryUser = temporaryUserService.create();
-        return authenticationClient.requestToken(temporaryUser.getUsername(), temporaryUser.getPassword())
+    public Single<? extends HttpResponse<AccessRefreshToken>> createTemporaryUser() {
+        return Single.fromCallable(temporaryUserService::create)
+                .flatMap(temporaryUser -> authenticationClient.requestToken(temporaryUser.getUsername(), temporaryUser.getPassword()))
                 .map(HttpResponse::ok);
     }
 }
