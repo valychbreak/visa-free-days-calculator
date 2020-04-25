@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "\"user\"")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "travelPeriods")
+@ToString(exclude = {"travelPeriods", "password"})
 public class User {
 
     @Id
