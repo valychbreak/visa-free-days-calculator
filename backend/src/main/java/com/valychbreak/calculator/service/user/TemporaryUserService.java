@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 public class TemporaryUserService {
 
     @Inject
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public TemporaryUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
