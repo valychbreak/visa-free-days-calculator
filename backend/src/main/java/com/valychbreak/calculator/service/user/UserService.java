@@ -29,7 +29,7 @@ public class UserService {
                 .switchIfEmpty(Mono.error(UserNotFoundException::new));
     }
 
-    public void delete(User user) {
-        userRepository.delete(user);
+    public Mono<Void> delete(User user) {
+        return Mono.fromRunnable(() -> userRepository.delete(user));
     }
 }

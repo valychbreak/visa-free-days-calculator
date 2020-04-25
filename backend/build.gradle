@@ -62,6 +62,7 @@ dependencies {
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.15.0'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
     testCompile 'org.mockito:mockito-junit-jupiter:3.3.3'
+    testCompile 'io.projectreactor:reactor-test:3.3.4.RELEASE'
 
 }
 
