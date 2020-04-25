@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.valychbreak.calculator.domain.dto.TravelPeriodDTO;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +16,8 @@ import java.time.LocalDate;
 @Entity
 @Table
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
+@ToString
 public class TravelPeriod {
 
     @Id
