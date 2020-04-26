@@ -12,3 +12,4 @@ out/
 .settings
 .classpath
 src/main/resources/public/
+application.yml
