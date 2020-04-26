@@ -5,6 +5,8 @@ datasources:
     username: sa
     password: ''
     dialect: H2
+    maximumPoolSize: 10
+    maxActive: 10
 
 jpa:
   default:
