@@ -24,3 +24,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test results
+        path: backend/build/reports/tests/test
