@@ -26,6 +26,11 @@ micronaut:
     cors:
       enabled: true
 
+  ssl:
+    port: 8443
+    enabled: true
+    buildSelfSigned: true
+
   router:
     static-resources:
       default:

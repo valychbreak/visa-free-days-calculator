@@ -9,6 +9,6 @@ ENV jdbc_driver org.postgresql.Driver
 
 COPY build/libs/backend-*-all.jar backend.jar
 COPY entrypoint.sh entrypoint.sh
-EXPOSE 8080
+EXPOSE 8443
 
 ENTRYPOINT ["sh", "entrypoint.sh", "backend.jar"]
