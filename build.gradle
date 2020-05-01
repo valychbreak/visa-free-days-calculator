@@ -5,6 +5,7 @@ task copyFrontendResources(dependsOn: ':frontend:build') {
 }
 
 copyFrontendResources.doFirst {
+    delete "${project(':backend').projectDir}/src/main/resources/public"
     copy {
         from project(':frontend').buildDir.absolutePath
         into "${project(':backend').buildDir}/resources/main/public"
