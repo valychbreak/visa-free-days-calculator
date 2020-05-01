@@ -1,17 +1,19 @@
 import { Component } from "react";
 import Axios from "axios";
+import { RouteComponentProps, withRouter, Redirect } from "react-router-dom";
+import UserContext from "./authentication/context/UserContext";
+import React from "react";
 
 type ErrorHandlerState = {
-    error: string
+    error: string;
 }
 
-class ErrorHandler extends Component<any, ErrorHandlerState> {
+class ErrorHandler extends Component<RouteComponentProps, ErrorHandlerState> {
   
     requestInterceptor: any;
     responseInterceptor: any;
 
     componentDidMount() {
-        // Set axios interceptors
         this.requestInterceptor = Axios.interceptors.request.use(req => {
             this.setState({ error: '' });
             return req;
@@ -20,8 +22,9 @@ class ErrorHandler extends Component<any, ErrorHandlerState> {
         this.responseInterceptor = Axios.interceptors.response.use(
             res => res,
             error => {
-                alert('Error happened');
-                this.setState({ error });
+                if (error.response && error.response.status === 401) {
+                    this.props.history.push('/login')
+                }
                 throw error;
             }
         );
@@ -34,8 +37,8 @@ class ErrorHandler extends Component<any, ErrorHandlerState> {
     }
   
     render() {
-        return this.props.children; 
+        return this.props.children;
     }
 };
 
-export default ErrorHandler;
+export default withRouter(ErrorHandler);
