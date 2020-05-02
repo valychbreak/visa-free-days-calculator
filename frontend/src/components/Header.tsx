@@ -5,7 +5,7 @@ import { Home, Flight, Close, AccountCircle, ExitToApp } from '@material-ui/icon
 import MenuIcon from '@material-ui/icons/Menu'
 import './Header.css'
 import UserContext from './authentication/context/UserContext';
-import { useAuth } from './authentication/Auth';
+import { useAuthentication } from './authentication/Authentication';
 
 const useStyles = () => ({
     title: {
@@ -18,9 +18,8 @@ interface HeaderState {
 }
 
 const AuthComp: React.FunctionComponent = () => {
-    const [logged] = useAuth(); 
+    const [logged] = useAuthentication(); 
 
-    console.log("auth is logged: ", logged)
     return <>{logged ? <Typography>Is logged: {String(logged)}</Typography> : <Typography>Not logged {String(logged)}</Typography>}</>
 }
 

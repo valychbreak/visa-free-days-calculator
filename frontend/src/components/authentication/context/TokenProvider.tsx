@@ -1,6 +1,6 @@
 import AccessToken from '../../../common/AccessToken';
 
-class TokenProvider {
+export class TokenProvider {
     private static TOKEN_KEY = 'REACT_TOKEN_AUTH';
 
     _token?: AccessToken;
@@ -35,7 +35,6 @@ class TokenProvider {
     }
 
     isLoggedIn(): boolean {
-        console.log("Is logged?", !!this._token);
         return !!this._token;
     }
 

@@ -1,9 +1,9 @@
 import AccessToken from "../../common/AccessToken";
 import { useState, useEffect } from "react";
 import React from "react";
-import { tokenProvider } from "./context/TokenProvider";
+import { tokenProvider, TokenProvider } from "./context/TokenProvider";
 
-export const useAuth = () => {
+export const useAuthentication = () => {
     const [isLogged, setIsLogged] = useState(tokenProvider.isLoggedIn());
 
     useEffect(() => {
@@ -21,17 +21,27 @@ export const useAuth = () => {
     return [isLogged];
 }
 
-export const login: typeof tokenProvider.setToken = (newToken: AccessToken) => {
-    tokenProvider.setToken(newToken);
-};
+class AuthenticationManager {
+    private _tokenProvider: TokenProvider;
+    
+    constructor(tokenProvider: TokenProvider) {
+        this._tokenProvider = tokenProvider;
+    }
 
-export const logout = () => {
-    tokenProvider.setToken(undefined);
-};
+    login(newToken: AccessToken): void {
+        this._tokenProvider.setToken(newToken);
+    }
+
+    logout(): void {
+        this._tokenProvider.setToken(undefined);
+    }
+}
+
+export const authenticationManager = new AuthenticationManager(tokenProvider);
 
 export const withAuth = (Component: any) => {
     return (props: any) => {
-        const auth = useAuth();
+        const auth = useAuthentication();
 
         return <Component auth={auth} {...props} />
     }
