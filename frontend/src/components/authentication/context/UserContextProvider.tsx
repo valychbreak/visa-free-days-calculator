@@ -4,6 +4,7 @@ import User from "../../../common/User";
 import AccessToken from "../../../common/AccessToken";
 import Axios from "axios";
 import Api from "../../../common/Api";
+import { AuthenticationAwareProp, authenticationManager, withAuth } from "../Authentication";
 
 type ProviderState = {
     user?: User;
@@ -12,7 +13,7 @@ type ProviderState = {
 
 const DEFAULT_STATE: ProviderState = {user: undefined, accessToken: undefined};
 
-class UserContextProvider extends Component<{}, ProviderState> {
+class UserContextProvider extends Component<AuthenticationAwareProp, ProviderState> {
 
     private static ACCESS_TOKEN_KEY = "authToken";
 
@@ -38,7 +39,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
 
     componentDidMount() {
         const existingToken = this.state.accessToken;
-        if (existingToken !== undefined) {
+        if (this.props.isLoggedIn) {
             this.fetchUserOrLogout();
         }
     }
@@ -72,7 +73,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
     }
 
     private isAuthenticated(): boolean {
-        return !!this.state.accessToken;
+        return this.props.isLoggedIn;
     }
 
     private getUser(): User | undefined {
@@ -87,9 +88,11 @@ class UserContextProvider extends Component<{}, ProviderState> {
         const response = await Axios.get('/api/user/temporary');
         const accessToken = this.toAccessToken(response.data);
 
+        authenticationManager.login(accessToken);
         localStorage.setItem(UserContextProvider.ACCESS_TOKEN_KEY, JSON.stringify(accessToken));
         this.applyAccessToken(accessToken.accessToken);
         this.setState({accessToken: accessToken.accessToken})
+
 
         this.fetchUserOrLogout();
         return accessToken;
@@ -114,4 +117,4 @@ class UserContextProvider extends Component<{}, ProviderState> {
     }
 }
 
-export default UserContextProvider;
+export default withAuth(UserContextProvider);

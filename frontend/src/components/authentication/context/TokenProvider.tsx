@@ -1,4 +1,5 @@
 import AccessToken from '../../../common/AccessToken';
+import Axios from 'axios';
 
 export class TokenProvider {
     private static TOKEN_KEY = 'REACT_TOKEN_AUTH';
@@ -26,8 +27,10 @@ export class TokenProvider {
     setToken(token?: AccessToken): void {
         if (token) {
             localStorage.setItem(TokenProvider.TOKEN_KEY, JSON.stringify(token));
+            Axios.defaults.headers.common['Authorization'] = 'Bearer ' + token.accessToken;
         } else {
             localStorage.removeItem(TokenProvider.TOKEN_KEY);
+            Axios.defaults.headers.common['Authorization'] = null;
         }
 
         this._token = token;

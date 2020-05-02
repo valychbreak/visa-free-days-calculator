@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { tokenProvider, TokenProvider } from "./context/TokenProvider";
 
+export type AuthenticationAwareProp = {
+    isLoggedIn: boolean;
+}
+
 export const useAuthentication = () => {
     const [isLogged, setIsLogged] = useState(tokenProvider.isLoggedIn());
 
@@ -41,8 +45,8 @@ export const authenticationManager = new AuthenticationManager(tokenProvider);
 
 export const withAuth = (Component: any) => {
     return (props: any) => {
-        const auth = useAuthentication();
+        const [logged] = useAuthentication();
 
-        return <Component auth={auth} {...props} />
+        return <Component isLoggedIn={logged} {...props} />
     }
 }
