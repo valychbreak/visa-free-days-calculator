@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Paper, Button, Typography, WithStyles, withStyles } from "@material-ui/core";
 import { UserContextConsumer, UserContext } from "../authentication/context/UserContext";
 import Alert from '@material-ui/lab/Alert';
+import { logout } from "../authentication/Auth";
 
 const useStyles = () => ({
     paper: {
@@ -41,6 +42,7 @@ class ProfilePage extends Component<WithStyles> {
 
     private logout(context: UserContext) {
         context.logout();
+        logout();
     }
 }
 

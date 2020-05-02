@@ -5,6 +5,7 @@ import { Home, Flight, Close, AccountCircle, ExitToApp } from '@material-ui/icon
 import MenuIcon from '@material-ui/icons/Menu'
 import './Header.css'
 import UserContext from './authentication/context/UserContext';
+import { useAuth } from './authentication/Auth';
 
 const useStyles = () => ({
     title: {
@@ -16,7 +17,15 @@ interface HeaderState {
     drawerOpen: boolean
 }
 
+const AuthComp: React.FunctionComponent = () => {
+    const [logged] = useAuth(); 
+
+    console.log("auth is logged: ", logged)
+    return <>{logged ? <Typography>Is logged: {String(logged)}</Typography> : <Typography>Not logged {String(logged)}</Typography>}</>
+}
+
 class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
+    
     constructor(props: any) {
         super(props);
 
@@ -51,6 +60,7 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
                         <MenuIcon fontSize="large" />
                     </IconButton>
                     <Typography className={classes.title} variant="h5" color="inherit">Visa calculator</Typography>
+                    <AuthComp />
                     <UserContext.Consumer>
                         {context => (
                             <div>

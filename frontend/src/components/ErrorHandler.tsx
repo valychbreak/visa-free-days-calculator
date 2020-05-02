@@ -6,12 +6,19 @@ import React from "react";
 
 type ErrorHandlerState = {
     error: string;
+    shouldLogout: boolean;
 }
 
 class ErrorHandler extends Component<RouteComponentProps, ErrorHandlerState> {
   
     requestInterceptor: any;
     responseInterceptor: any;
+
+    constructor(props: RouteComponentProps) {
+        super(props);
+
+        this.state = {error: '', shouldLogout: false}
+    }
 
     componentDidMount() {
         this.requestInterceptor = Axios.interceptors.request.use(req => {
@@ -23,7 +30,9 @@ class ErrorHandler extends Component<RouteComponentProps, ErrorHandlerState> {
             res => res,
             error => {
                 if (error.response && error.response.status === 401) {
-                    this.props.history.push('/login')
+                    console.log('Captured error');
+                    // this.setState({error: error, shouldLogout: true});
+                    //this.props.history.push('/login')
                 }
                 throw error;
             }
@@ -37,7 +46,20 @@ class ErrorHandler extends Component<RouteComponentProps, ErrorHandlerState> {
     }
   
     render() {
-        return this.props.children;
+        // return this.props.children;
+        return (
+            <UserContext.Consumer>
+                {context => (
+                    this.state.shouldLogout ? this.logout() : this.props.children
+                )}
+            </UserContext.Consumer>
+        )
+    }
+
+    logout() {
+        this.setState({error: '', shouldLogout: false});
+        console.log('Logged out');
+        return 'logged-out';
     }
 };
 
