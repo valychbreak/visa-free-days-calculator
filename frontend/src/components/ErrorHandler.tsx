@@ -1,9 +1,6 @@
 import { Component } from "react";
 import Axios from "axios";
 import { RouteComponentProps, withRouter, Redirect } from "react-router-dom";
-import UserContext from "./authentication/context/UserContext";
-import React from "react";
-import { tokenProvider } from "./authentication/context/TokenProvider";
 
 type ErrorHandlerState = {
     error: string;
@@ -22,17 +19,10 @@ class ErrorHandler extends Component<RouteComponentProps, ErrorHandlerState> {
     }
 
     componentDidMount() {
-        // this.requestInterceptor = Axios.interceptors.request.use(req => {
-        //     this.setState({ error: '' });
-        //     return tokenProvider.getToken()
-        //         .then(token => {
-        //             console.log('Injecting token ', token);
-        //             if (token) {
-        //                 req.headers.authorization = 'Bearer ' + token;
-        //             }
-        //             return req;
-        //         });
-        // });
+        this.requestInterceptor = Axios.interceptors.request.use(req => {
+            this.setState({ error: '' });
+            return req;
+        });
   
         this.responseInterceptor = Axios.interceptors.response.use(
             res => res,
@@ -49,7 +39,7 @@ class ErrorHandler extends Component<RouteComponentProps, ErrorHandlerState> {
   
     componentWillUnmount() {
         // Remove handlers, so Garbage Collector will get rid of if WrappedComponent will be removed 
-        // Axios.interceptors.request.eject(this.requestInterceptor);
+        Axios.interceptors.request.eject(this.requestInterceptor);
         Axios.interceptors.response.eject(this.responseInterceptor);
     }
   
