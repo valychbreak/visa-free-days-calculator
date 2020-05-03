@@ -13,3 +13,4 @@ out/
 .classpath
 src/main/resources/public/
 application.yml
+*.p12

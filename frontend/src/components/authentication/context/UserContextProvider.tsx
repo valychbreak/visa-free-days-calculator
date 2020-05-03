@@ -4,41 +4,23 @@ import User from "../../../common/User";
 import AccessToken from "../../../common/AccessToken";
 import Axios from "axios";
 import Api from "../../../common/Api";
+import { AuthenticationAwareProp, authenticationManager, withAuth } from "../Authentication";
 
 type ProviderState = {
     user?: User;
-    accessToken?: string;
 }
 
-const DEFAULT_STATE: ProviderState = {user: undefined, accessToken: undefined};
+const DEFAULT_STATE: ProviderState = {user: undefined};
 
-class UserContextProvider extends Component<{}, ProviderState> {
-
-    private static ACCESS_TOKEN_KEY = "authToken";
+class UserContextProvider extends Component<AuthenticationAwareProp, ProviderState> {
 
     constructor(props: any) {
         super(props);
-
-        const tokenJson = localStorage.getItem(UserContextProvider.ACCESS_TOKEN_KEY);
-        if (tokenJson !== null) {
-            console.log('Using cached token');
-
-            const existingToken: AccessToken = JSON.parse(tokenJson);
-            this.applyAccessToken(existingToken.accessToken);
-
-            this.state = { accessToken: existingToken.accessToken };
-        } else {
-            this.state = DEFAULT_STATE;
-        }
-    }
-
-    private applyAccessToken(accessToken: string) {
-        Axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+        this.state = DEFAULT_STATE;
     }
 
     componentDidMount() {
-        const existingToken = this.state.accessToken;
-        if (existingToken !== undefined) {
+        if (this.props.isLoggedIn) {
             this.fetchUserOrLogout();
         }
     }
@@ -72,7 +54,7 @@ class UserContextProvider extends Component<{}, ProviderState> {
     }
 
     private isAuthenticated(): boolean {
-        return !!this.state.accessToken;
+        return this.props.isLoggedIn;
     }
 
     private getUser(): User | undefined {
@@ -85,33 +67,16 @@ class UserContextProvider extends Component<{}, ProviderState> {
 
     private async authorizeWithTemporaryUser(): Promise<AccessToken> {
         const response = await Axios.get('/api/user/temporary');
-        const accessToken = this.toAccessToken(response.data);
+        const accessToken = AccessToken.from(response.data);
 
-        localStorage.setItem(UserContextProvider.ACCESS_TOKEN_KEY, JSON.stringify(accessToken));
-        this.applyAccessToken(accessToken.accessToken);
-        this.setState({accessToken: accessToken.accessToken})
-
-        this.fetchUserOrLogout();
-        return accessToken;
-    }
-
-    private toAccessToken(jsonObject: any): AccessToken {
-        const token = jsonObject.access_token;
-        const refreshToken = jsonObject.refresh_token;
-        const tokenType = jsonObject.token_type;
-        const expiresIn = jsonObject.expires_in;
-
-        if (!token || !refreshToken || !tokenType || !expiresIn) {
-            throw new Error('Failed to parse token response');
-        }
-
-        return new AccessToken(token, refreshToken, tokenType, expiresIn);
+        authenticationManager.login(accessToken);
+        return this.fetchUserOrLogout().then(_ => accessToken);
     }
 
     private logout() {
-        localStorage.removeItem(UserContextProvider.ACCESS_TOKEN_KEY);
         this.setState(DEFAULT_STATE);
+        authenticationManager.logout();
     }
 }
 
-export default UserContextProvider;
+export default withAuth(UserContextProvider);

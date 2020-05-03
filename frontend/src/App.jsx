@@ -20,12 +20,12 @@ function App() {
             <Header />
             <Container>
               <Box>
-                  <Switch>
-                    <Route exact path='/' component={ReactMainPage} />
-                    <Route exact path='/login' component={LoginPage} />
-                    <AuthenticatedRoute path='/calculator' component={VisaFreeDateCalculator} />
-                    <AuthenticatedRoute path='/profile' component={ProfilePage} />
-                  </Switch>
+                <Switch>
+                  <Route exact path='/' component={ReactMainPage} />
+                  <Route exact path='/login' component={LoginPage} />
+                  <AuthenticatedRoute path='/calculator' component={VisaFreeDateCalculator} />
+                  <AuthenticatedRoute path='/profile' component={ProfilePage} />
+                </Switch>
               </Box>
             </Container>
           </UserContextProvider>

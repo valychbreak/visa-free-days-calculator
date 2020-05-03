@@ -59,7 +59,7 @@ class GetTravelPeriodControllerTest {
 
         // when
         HttpRequest<Object> httpRequest = HttpRequest.GET("/period/all")
-                .bearerAuth(testAuthTokenProvider.getToken(testUser));
+                .bearerAuth(testAuthTokenProvider.getAccessToken(testUser));
 
         // then
         String response = client.toBlocking().retrieve(httpRequest);

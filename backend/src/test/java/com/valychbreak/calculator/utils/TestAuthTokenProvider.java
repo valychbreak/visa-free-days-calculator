@@ -18,9 +18,12 @@ public class TestAuthTokenProvider {
         this.authClient = authenticationClient;
     }
 
-    public String getToken(User user) {
+    public String getAccessToken(User user) {
+        return getToken(user).getAccessToken();
+    }
+
+    public AccessRefreshToken getToken(User user) {
         return authClient.requestToken(user.getUsername(), user.getPassword())
-                .map(AccessRefreshToken::getAccessToken)
                 .blockingGet();
     }
 }

@@ -65,7 +65,7 @@ class DeleteTravelPeriodControllerTest {
         travelPeriodRepository.save(travelPeriod);
 
         HttpRequest<Object> httpRequest = HttpRequest.DELETE(String.format("/period/%s/delete", travelPeriod.getId()))
-                .bearerAuth(authTokenProvider.getToken(user));
+                .bearerAuth(authTokenProvider.getAccessToken(user));
 
         HttpResponse<Object> httpResponse = client.toBlocking().exchange(httpRequest);
         assertThat(httpResponse.code()).isEqualTo(HttpStatus.OK.getCode());
@@ -76,7 +76,7 @@ class DeleteTravelPeriodControllerTest {
     @Test
     void shouldReturnNotFoundErrorWhenTravelPeriodIdDoesNotExist() {
         MutableHttpRequest<Object> httpRequest = HttpRequest.DELETE("/period/10000/delete")
-                .bearerAuth(authTokenProvider.getToken(user));
+                .bearerAuth(authTokenProvider.getAccessToken(user));
 
         HttpClientResponseException thrownException = assertThrows(
                 HttpClientResponseException.class, () -> client.toBlocking().exchange(httpRequest)
@@ -100,7 +100,7 @@ class DeleteTravelPeriodControllerTest {
         travelPeriodRepository.save(travelPeriod);
 
         HttpRequest<Object> httpRequest = HttpRequest.DELETE(String.format("/period/%s/delete", travelPeriod.getId()))
-                .bearerAuth(authTokenProvider.getToken(user));
+                .bearerAuth(authTokenProvider.getAccessToken(user));
 
         HttpClientResponseException thrownException = assertThrows(
                 HttpClientResponseException.class, () -> client.toBlocking().exchange(httpRequest)

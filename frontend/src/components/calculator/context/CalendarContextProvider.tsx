@@ -3,6 +3,7 @@ import Axios from "axios";
 import TravelPeriod from "../../../common/TravelPeriod";
 import CalculatorContext from "./CalculatorContext";
 import { withSnackbar, WithSnackbarProps } from "notistack";
+import Api from "../../../common/Api";
 
 type CalculatorProviderState = {
     travelPeriods: TravelPeriod[],
@@ -73,9 +74,9 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
     }
 
     private loadTravelPeriods() {
-        Axios.get('/api/period/all')
-            .then(res => {
-                this.setState({ travelPeriods: res.data, failed: false });
+        Api.fetchTravelPeriods()
+            .then(travelPeriods => {
+                this.setState({ travelPeriods: travelPeriods, failed: false });
             })
             .catch(err => {
                 this.setState({ travelPeriods: [], failed: true });

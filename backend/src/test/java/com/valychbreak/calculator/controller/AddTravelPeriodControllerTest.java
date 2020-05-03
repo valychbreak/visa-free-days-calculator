@@ -47,7 +47,7 @@ class AddTravelPeriodControllerTest {
 
         HttpRequest<TravelPeriodDTO> httpRequest = HttpRequest.POST("/period/add", travelPeriodDTO)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
-                .bearerAuth(authTokenProvider.getToken(user));
+                .bearerAuth(authTokenProvider.getAccessToken(user));
 
         // when
         HttpResponse<TravelPeriodDTO> response = client.toBlocking()
