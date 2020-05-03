@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk13-openj9:jdk-13.0.2_8_openj9-0.18.0-alpine-slim
+FROM adoptopenjdk/openjdk14-openj9:jdk-14.0.1_7_openj9-0.20.0-alpine-slim
 
 RUN apk --no-cache add curl
 
