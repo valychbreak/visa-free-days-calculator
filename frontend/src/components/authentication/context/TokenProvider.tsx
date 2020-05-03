@@ -80,7 +80,6 @@ export const tokenProvider = new TokenProvider();
 Axios.interceptors.request.use(req => {
     return tokenProvider.getToken()
         .then(token => {
-            console.log('Injecting token ', token);
             if (token) {
                 req.headers.authorization = 'Bearer ' + token;
             }
