@@ -49,7 +49,7 @@ class UserInfoControllerTest {
         userRepository.save(testUser);
 
         HttpRequest<Object> httpRequest = HttpRequest.GET("/user/info")
-                .bearerAuth(authTokenProvider.getToken(testUser));
+                .bearerAuth(authTokenProvider.getAccessToken(testUser));
 
         HttpResponse<UserDto> response = client.toBlocking().exchange(httpRequest, UserDto.class);
         assertThat(response.code()).isEqualTo(HttpStatus.OK.getCode());
@@ -77,7 +77,7 @@ class UserInfoControllerTest {
     void shouldReturnUnauthorizedWhenUserFromTokenDoesNotExist() {
         // given
         User testUser = userRepository.save(createUser("testUnauthorized"));
-        String token = authTokenProvider.getToken(testUser);
+        String token = authTokenProvider.getAccessToken(testUser);
         userRepository.delete(testUser);
 
         HttpRequest<Object> httpRequest = HttpRequest.GET("/user/info").bearerAuth(token);
