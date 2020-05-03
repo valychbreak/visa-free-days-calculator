@@ -13,14 +13,13 @@ export class TokenProvider {
     }
 
     async getToken(): Promise<string | null> {
-        console.log("geting token", this._token);
         if (!this._token) {
             return null;
         }
 
         if (this.isExpired(this._token)) {
             this.setToken(undefined);
-            console.log('Expired');
+            console.log('Removing token as it expired');
         }
 
         return this._token.accessToken;
