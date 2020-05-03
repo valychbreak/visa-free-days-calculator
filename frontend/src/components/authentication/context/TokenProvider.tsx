@@ -18,8 +18,15 @@ export class TokenProvider {
         }
 
         if (this.isExpired(this._token)) {
-            this.setToken(undefined);
-            console.log('Removing token as it expired');
+            console.log('Refreshing token...');
+            let response = await Axios.post('/oauth/access_token', {"grant_type": "refresh_token", "refresh_token": this._token.refreshToken});
+
+            try {
+                let newToken = AccessToken.from(response.data);
+                this.setToken(newToken);
+            } catch(ignore) {
+                console.log('Failed to refresh token');
+            }
         }
 
         return this._token.accessToken;
@@ -77,12 +84,14 @@ export class TokenProvider {
 export const tokenProvider = new TokenProvider();
 
 // Leaving here and not in component because of page reloading issue (authorization header is not being set)
-Axios.interceptors.request.use(req => {
-    return tokenProvider.getToken()
-        .then(token => {
-            if (token) {
-                req.headers.authorization = 'Bearer ' + token;
-            }
-            return req;
-        });
+Axios.interceptors.request.use(async req => {
+    if (!req.url?.includes('/api/')) {
+        return req;
+    }
+    
+    const token = await tokenProvider.getToken();
+    if (token) {
+        req.headers.authorization = 'Bearer ' + token;
+    }
+    return req;
 });

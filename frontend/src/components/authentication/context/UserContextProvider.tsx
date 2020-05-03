@@ -67,23 +67,10 @@ class UserContextProvider extends Component<AuthenticationAwareProp, ProviderSta
 
     private async authorizeWithTemporaryUser(): Promise<AccessToken> {
         const response = await Axios.get('/api/user/temporary');
-        const accessToken = this.toAccessToken(response.data);
+        const accessToken = AccessToken.from(response.data);
 
         authenticationManager.login(accessToken);
         return this.fetchUserOrLogout().then(_ => accessToken);
-    }
-
-    private toAccessToken(jsonObject: any): AccessToken {
-        const token = jsonObject.access_token;
-        const refreshToken = jsonObject.refresh_token;
-        const tokenType = jsonObject.token_type;
-        const expiresIn = jsonObject.expires_in;
-
-        if (!token || !refreshToken || !tokenType || !expiresIn) {
-            throw new Error('Failed to parse token response');
-        }
-
-        return new AccessToken(token, refreshToken, tokenType, expiresIn);
     }
 
     private logout() {
