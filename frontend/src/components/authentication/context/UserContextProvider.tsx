@@ -14,24 +14,9 @@ const DEFAULT_STATE: ProviderState = {user: undefined};
 
 class UserContextProvider extends Component<AuthenticationAwareProp, ProviderState> {
 
-    private static ACCESS_TOKEN_KEY = "authToken";
-
     constructor(props: any) {
         super(props);
-
-        const tokenJson = localStorage.getItem(UserContextProvider.ACCESS_TOKEN_KEY);
-        if (tokenJson !== null) {
-            console.log('Using cached token');
-
-            const existingToken: AccessToken = JSON.parse(tokenJson);
-            this.applyAccessToken(existingToken.accessToken);
-        }
-
         this.state = DEFAULT_STATE;
-    }
-
-    private applyAccessToken(accessToken: string) {
-        // Axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
     }
 
     componentDidMount() {
@@ -85,8 +70,6 @@ class UserContextProvider extends Component<AuthenticationAwareProp, ProviderSta
         const accessToken = this.toAccessToken(response.data);
 
         authenticationManager.login(accessToken);
-        localStorage.setItem(UserContextProvider.ACCESS_TOKEN_KEY, JSON.stringify(accessToken));
-        this.applyAccessToken(accessToken.accessToken);
         return this.fetchUserOrLogout().then(_ => accessToken);
     }
 
@@ -104,8 +87,8 @@ class UserContextProvider extends Component<AuthenticationAwareProp, ProviderSta
     }
 
     private logout() {
-        localStorage.removeItem(UserContextProvider.ACCESS_TOKEN_KEY);
         this.setState(DEFAULT_STATE);
+        authenticationManager.logout();
     }
 }
 
