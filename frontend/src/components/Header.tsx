@@ -17,12 +17,6 @@ interface HeaderState {
     drawerOpen: boolean
 }
 
-const AuthComp: React.FunctionComponent = () => {
-    const [logged] = useAuthentication(); 
-
-    return <>{logged ? <Typography>Is logged: {String(logged)}</Typography> : <Typography>Not logged {String(logged)}</Typography>}</>
-}
-
 class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
     
     constructor(props: any) {
@@ -59,7 +53,6 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
                         <MenuIcon fontSize="large" />
                     </IconButton>
                     <Typography className={classes.title} variant="h5" color="inherit">Visa calculator</Typography>
-                    <AuthComp />
                     <UserContext.Consumer>
                         {context => (
                             <div>
