@@ -5,7 +5,6 @@ import { Home, Flight, Close, AccountCircle, ExitToApp } from '@material-ui/icon
 import MenuIcon from '@material-ui/icons/Menu'
 import './Header.css'
 import UserContext from './authentication/context/UserContext';
-import { useAuthentication } from './authentication/Authentication';
 
 const useStyles = () => ({
     title: {
@@ -18,7 +17,6 @@ interface HeaderState {
 }
 
 class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
-    
     constructor(props: any) {
         super(props);
 
