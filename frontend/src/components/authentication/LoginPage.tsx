@@ -3,7 +3,6 @@ import { Button, Paper, Typography, withStyles, WithStyles } from "@material-ui/
 import { UserContext, UserContextConsumer } from "./context/UserContext";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { withSnackbar, WithSnackbarProps } from "notistack";
-import { authenticationManager } from "./Authentication";
 
 const useStyles = () => ({
     paper: {

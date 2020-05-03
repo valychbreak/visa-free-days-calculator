@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Axios from "axios";
-import { RouteComponentProps, withRouter, Redirect } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 type ErrorHandlerState = {
     error: string;
