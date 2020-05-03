@@ -34,7 +34,6 @@ class LoginPage extends Component<RouteComponentProps & WithStyles & WithSnackba
     private authorizeWithTempUser(context: UserContext) {
         context.authorizeWithTemporaryUser()
             .then(accessToken => {
-                authenticationManager.login(accessToken);
                 this.props.history.push('/profile');
             }).catch(error => {
                 this.props.enqueueSnackbar('Failed to login as temporary user. ' + error, {variant: 'error'});

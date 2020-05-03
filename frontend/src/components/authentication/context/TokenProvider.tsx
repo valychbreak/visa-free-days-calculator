@@ -13,24 +13,24 @@ export class TokenProvider {
     }
 
     async getToken(): Promise<string | null> {
+        console.log("geting token", this._token);
         if (!this._token) {
             return null;
         }
 
         if (this.isExpired(this._token)) {
             this.setToken(undefined);
+            console.log('Expired');
         }
 
-        return !this._token ? null : this._token.accessToken;
+        return this._token.accessToken;
     }
 
     setToken(token?: AccessToken): void {
         if (token) {
             localStorage.setItem(TokenProvider.TOKEN_KEY, JSON.stringify(token));
-            Axios.defaults.headers.common['Authorization'] = 'Bearer ' + token.accessToken;
         } else {
             localStorage.removeItem(TokenProvider.TOKEN_KEY);
-            Axios.defaults.headers.common['Authorization'] = null;
         }
 
         this._token = token;
@@ -55,11 +55,36 @@ export class TokenProvider {
     }
 
     private isExpired(token?: AccessToken): boolean {
-        if (!token?.expiresIn) {
+        if (!token) {
             return false;
         }
-        return Date.now() > token.expiresIn;
+
+        let expirationDate = this.getExpirationDate(token.accessToken);
+        return !!expirationDate ?  Date.now() > expirationDate : false;
     }
+
+    private getExpirationDate(jwtToken?: string): number | null {
+        if (!jwtToken) {
+            return null;
+        }
+    
+        const jwt = JSON.parse(atob(jwtToken.split('.')[1]));
+    
+        // multiply by 1000 to convert seconds into milliseconds
+        return jwt && jwt.exp && jwt.exp * 1000 || null;
+    };
 }
 
 export const tokenProvider = new TokenProvider();
+
+// Leaving here and not in component because of page reloading issue (authorization header is not being set)
+Axios.interceptors.request.use(req => {
+    return tokenProvider.getToken()
+        .then(token => {
+            console.log('Injecting token ', token);
+            if (token) {
+                req.headers.authorization = 'Bearer ' + token;
+            }
+            return req;
+        });
+});

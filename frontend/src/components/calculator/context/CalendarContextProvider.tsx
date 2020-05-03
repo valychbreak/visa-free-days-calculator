@@ -3,13 +3,15 @@ import Axios from "axios";
 import TravelPeriod from "../../../common/TravelPeriod";
 import CalculatorContext from "./CalculatorContext";
 import { withSnackbar, WithSnackbarProps } from "notistack";
+import { withAuth, AuthenticationAwareProp } from "../../authentication/Authentication";
+import Api from "../../../common/Api";
 
 type CalculatorProviderState = {
     travelPeriods: TravelPeriod[],
     failed: boolean
 }
 
-class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorProviderState> {
+class CalculatorContextProvider extends Component<WithSnackbarProps & AuthenticationAwareProp, CalculatorProviderState> {
     static DEFAULT_STATE: CalculatorProviderState = {
         travelPeriods: [],
         failed: false
@@ -21,7 +23,9 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
     }
 
     componentDidMount() {
-        this.loadTravelPeriods();
+        if (this.props.isLoggedIn) {
+            this.loadTravelPeriods();
+        }
     }
 
     render() {
@@ -73,9 +77,10 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
     }
 
     private loadTravelPeriods() {
-        Axios.get('/api/period/all')
-            .then(res => {
-                this.setState({ travelPeriods: res.data, failed: false });
+        console.log('Loading periods');
+        Api.fetchTravelPeriods()
+            .then(travelPeriods => {
+                this.setState({ travelPeriods: travelPeriods, failed: false });
             })
             .catch(err => {
                 this.setState({ travelPeriods: [], failed: true });
@@ -84,4 +89,4 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
     }
 }
 
-export default withSnackbar(CalculatorContextProvider);
+export default withAuth(withSnackbar(CalculatorContextProvider));

@@ -8,10 +8,9 @@ import { AuthenticationAwareProp, authenticationManager, withAuth } from "../Aut
 
 type ProviderState = {
     user?: User;
-    accessToken?: string;
 }
 
-const DEFAULT_STATE: ProviderState = {user: undefined, accessToken: undefined};
+const DEFAULT_STATE: ProviderState = {user: undefined};
 
 class UserContextProvider extends Component<AuthenticationAwareProp, ProviderState> {
 
@@ -26,19 +25,16 @@ class UserContextProvider extends Component<AuthenticationAwareProp, ProviderSta
 
             const existingToken: AccessToken = JSON.parse(tokenJson);
             this.applyAccessToken(existingToken.accessToken);
-
-            this.state = { accessToken: existingToken.accessToken };
-        } else {
-            this.state = DEFAULT_STATE;
         }
+
+        this.state = DEFAULT_STATE;
     }
 
     private applyAccessToken(accessToken: string) {
-        Axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+        // Axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
     }
 
     componentDidMount() {
-        const existingToken = this.state.accessToken;
         if (this.props.isLoggedIn) {
             this.fetchUserOrLogout();
         }
@@ -91,11 +87,7 @@ class UserContextProvider extends Component<AuthenticationAwareProp, ProviderSta
         authenticationManager.login(accessToken);
         localStorage.setItem(UserContextProvider.ACCESS_TOKEN_KEY, JSON.stringify(accessToken));
         this.applyAccessToken(accessToken.accessToken);
-        this.setState({accessToken: accessToken.accessToken})
-
-
-        this.fetchUserOrLogout();
-        return accessToken;
+        return this.fetchUserOrLogout().then(_ => accessToken);
     }
 
     private toAccessToken(jsonObject: any): AccessToken {
