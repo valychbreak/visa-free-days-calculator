@@ -71,6 +71,21 @@ class UserServiceIntegrationTest {
     }
 
     @Test
+    void shouldFindUserByUserCredentials() {
+        // given
+        var userMono = getCreateUserMono(user);
+
+        // when
+        var composite = Mono.from(userMono)
+                .then(userService.findUserBy(USERNAME, user.getPassword()));
+
+        // then
+        StepVerifier.create(composite)
+                .expectNext(user)
+                .verifyComplete();
+    }
+
+    @Test
     void shouldDeleteUser() {
         // given
         var createUser = getCreateUserMono(user);

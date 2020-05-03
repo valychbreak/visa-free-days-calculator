@@ -29,6 +29,13 @@ public class UserService {
                 .switchIfEmpty(Mono.error(UserNotFoundException::new));
     }
 
+    public Mono<User> findUserBy(String username, String password) {
+        return asyncRepositoryCallExecutor.async(() -> userRepository.findByUsername(username))
+                .flatMap(Mono::justOrEmpty)
+                .filter(user -> password.equals(user.getPassword()))
+                .switchIfEmpty(Mono.error(UserNotFoundException::new));
+    }
+
     public Mono<Void> delete(User user) {
         return Mono.fromRunnable(() -> userRepository.delete(user));
     }
