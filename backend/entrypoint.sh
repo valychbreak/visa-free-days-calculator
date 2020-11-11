@@ -32,6 +32,4 @@ java ${jdbc_url_param} \
   ${jdbc_password_param} \
   "-Dcom.sun.management.jmxremote" \
   "-Xmx128m" \
-  "-XX:+IdleTuningGcOnIdle" \
-  "-Xtune:virtualized" \
   -jar "$1"
