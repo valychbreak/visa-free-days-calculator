@@ -4,15 +4,30 @@
 
 Simple application for calculating visa-free days when planning trips.
 
-## Run application
+# Run application
 
-### Build
- - Configure data source properties in `application.yml`
+## Setup configuration
+
+ - Copy `resources/application.yml.example` to `resources/application.yml`
+ - Change `datasources:` properties (e.g. url, username, password, etc). You might need to configure your own database locally. 
+
+## Build
+
+### Docker image (recommended)
+
+ - Run from root folder:
+ 
+```docker build -t <tag> .```
+
+### Build for local run
+
  - Run from root folder:
 
 ```./gradlew assembleServerAndClient```
 
-### Startup
+_Note: run this command even if you want to run the app from IDE. It will build frontend module and copy UI files to `backend/src/main/resources`_. 
+
+## Startup
  - (Optional) Configure database:
     - Create docker images volumes folders:
     `mkdir -p $HOME/.docker-image-data/postgresql/data`
@@ -30,6 +45,22 @@ Simple application for calculating visa-free days when planning trips.
  - Apply DB migrations (change db properties):
  
  ```../gradlew flywayClean flywayMigrate -Dflyway.user=visa_calc_user -Dflyway.password=test12 -Dflyway.url=jdbc:postgresql://localhost:5432/visa-calculator-db-test```
- - Run from root folder (replace * with built JAR version):
+
+### Run with docker
+
+```docker run -p 8080:8080 <image_tag>```
+
+Optionally: you can pass database details to docker image with env variables:
+
+```
+-e jdbc_url=""
+-e jdbc_username=""
+-e jdbc_password=""
+-e jdbc_driver=""
+```
+ 
+### Run without docker
+
+ - Run `Application` class from IDE. Or run from root folder (replace * with built JAR version):
 
 ```java -jar backend/build/libs/backend-*-all.jar```
