@@ -21,7 +21,7 @@ COPY --chown=gradle:gradle ./backend /home/gradle/app-src
 WORKDIR /home/gradle/app-src
 COPY --from=build-frontend /app/build /home/gradle/app-src/src/main/resources/public
 
-RUN gradle build
+RUN gradle build -x test
 
 
 ## Stage 3 : Final image with JRE and application executable jar
