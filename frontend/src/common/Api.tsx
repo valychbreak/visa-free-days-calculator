@@ -16,13 +16,10 @@ class Api {
     }
 }
 
-const isProd = process.env.NODE_ENV === 'production';
-
-if (isProd) {
-    console.log('Loading production config...');
-} else {
-    console.log('Loading dev config...');
-    Axios.defaults.baseURL = "http://localhost:8080";
+let baseURL = process.env.REACT_APP_API_URL;
+if (baseURL) {
+    Axios.defaults.baseURL = baseURL;
+    console.log('API url was set to ' + baseURL);
 }
 
 export default new Api();
