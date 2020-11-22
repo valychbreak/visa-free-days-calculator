@@ -23,7 +23,7 @@ ENV jdbc_driver org.postgresql.Driver
 COPY --from=backend-build /home/gradle/app-src/build/libs/backend-*-all.jar backend.jar
 COPY ./entrypoint.sh entrypoint.sh
 
-EXPOSE 443
+EXPOSE 80
 
 # Run application using executable jar application
 ENTRYPOINT ["sh", "entrypoint.sh", "backend.jar"]
