@@ -24,8 +24,8 @@ jobs:
       run: chmod +x gradlew
     - name: Copy configuration
       run: cp backend/src/main/resources/application.yml.example backend/src/main/resources/application.yml
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Build with Gradle & Run tests
+      run: ./gradlew :backend:build
     - name: Upload test results
       uses: actions/upload-artifact@v2
       with:
