@@ -13,19 +13,30 @@ Simple application for calculating visa-free days when planning trips.
 
 ## Build
 
-### Docker image (recommended)
+### Backend
+#### Docker image (recommended)
 
- - Run from root folder:
+ - Run from `backend/` folder:
  
 ```docker build -t <tag> .```
 
-### Build for local run
+#### Build for local run
 
- - Run from root folder:
+ - Run from `backend/` folder:
 
-```./gradlew assembleServerAndClient```
+```./gradlew build -x test```
 
-_Note: run this command even if you want to run the app from IDE. It will build frontend module and copy UI files to `backend/src/main/resources`_. 
+### Frontend
+
+ - Run from `frontend/` folder:
+ 
+ ```npm install && npm run build```
+ 
+Also, you can build Docker image. From `frontend/` folder:
+
+```docker build -t <tag> .``` 
+
+_Note: you can adjust API url if needed in `frontend/.env.development` file_
 
 ## Startup
  - (Optional) Configure database:
@@ -45,10 +56,15 @@ _Note: run this command even if you want to run the app from IDE. It will build 
  - Apply DB migrations (change db properties):
  
  ```../gradlew flywayClean flywayMigrate -Dflyway.user=visa_calc_user -Dflyway.password=test12 -Dflyway.url=jdbc:postgresql://localhost:5432/visa-calculator-db-test```
+ - Run frontend application:
+    - From `frontend/` folder run: ```npm start```
+    - Or you can run built docker image:
+    
+ ```docker run -p 80:80 <image_tag>```
 
-### Run with docker
+### Run backend with docker
 
-```docker run -p 8080:8080 <image_tag>```
+```docker run -p 8080:80 <image_tag>```
 
 Optionally: you can pass database details to docker image with env variables:
 
@@ -59,8 +75,10 @@ Optionally: you can pass database details to docker image with env variables:
 -e jdbc_driver=""
 ```
  
-### Run without docker
+### Run backend without docker
 
  - Run `Application` class from IDE. Or run from root folder (replace * with built JAR version):
 
 ```java -jar backend/build/libs/backend-*-all.jar```
+
+_Note: you can modify port in `micronaut.server.port` in `backend/src/main/resources/application.yml` file_
