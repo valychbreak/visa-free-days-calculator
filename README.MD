@@ -22,9 +22,9 @@ Simple application for calculating visa-free days when planning trips.
 
 #### Build for local run
 
- - Run from `backend/` folder:
+ - Run from root folder:
 
-```./gradlew build -x test```
+```./gradlew :backend:build -x test```
 
 ### Frontend
 
