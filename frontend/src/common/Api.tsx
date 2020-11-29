@@ -1,7 +1,6 @@
 import User from "./User";
 import Axios from "axios";
 import TravelPeriod from "./TravelPeriod";
-import moment from "moment";
 
 class Api {
     static API_BASE = 'http://localhost:8080/api';
@@ -14,17 +13,13 @@ class Api {
     async fetchTravelPeriods(): Promise<TravelPeriod[]> {
         const response = await Axios.get('/api/period/all');
         var rawTravelPeriods = response.data;
-        var loadedPeriods:TravelPeriod[] = new Array()
+        var loadedPeriods:TravelPeriod[] = [];
 
         for (var rawTravelPeriod of rawTravelPeriods) {
             let parsedPeriod = TravelPeriod.from(rawTravelPeriod);
             loadedPeriods.push(parsedPeriod);
         }
         return loadedPeriods;
-    }
-
-    toDate(date: string) {
-        return moment(date, "YYYY-MM-DD", true);
     }
 }
 
