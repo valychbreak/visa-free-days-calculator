@@ -26,6 +26,7 @@ class TravelPeriodFrom extends Component {
 
         this.saveNewPeriod = this.saveNewPeriod.bind(this);
         this.handlePeriodInputChange = this.handlePeriodInputChange.bind(this);
+        this.clearForm = this.clearForm.bind(this);
     }
 
     render() {
@@ -65,12 +66,22 @@ class TravelPeriodFrom extends Component {
                                 </FormControl>
                             </Grid>
 
-                            <Button type="submit" color="primary" variant="contained" fullWidth>Add</Button>
+                            <Grid item xs={6}>
+                                <Button type="submit" color="primary" variant="contained" fullWidth>Submit</Button>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Button type="button" color="default" variant="outlined" onClick={this.clearForm} fullWidth>Clear</Button>
+                            </Grid>
                         </Grid>
                     </form>
                 )}
             </CalculatorContext.Consumer>
         )
+    }
+
+    clearForm(event) {
+        this.setState(DEFAULT_STATE);
     }
 
     saveNewPeriod(context, event) {
