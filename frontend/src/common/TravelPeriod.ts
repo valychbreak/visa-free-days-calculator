@@ -20,7 +20,7 @@ class TravelPeriod {
         return moment(date, "YYYY-MM-DD", true);
     }
     
-    
+
     constructor(start: Moment, end: Moment, country: string, note = '') {
         this.start = start;
         this.end = end;
@@ -28,8 +28,8 @@ class TravelPeriod {
         this.note = note;
     }
 
-    get duration(): number {
-        return this.end.diff(this.start, 'days') + 1;
+    get duration(): Duration {
+        return moment.duration(this.end.diff(this.start)).add(1, 'day');
     }
 }
 
