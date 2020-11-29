@@ -50,11 +50,11 @@ class CalculatorContextProvider extends Component<WithSnackbarProps, CalculatorP
 
         return Axios.post("/api/period/add", params, config)
             .then(response => {
-                const createTravelPeriod = (response.data as TravelPeriod);
-                this.setState({ travelPeriods: [...this.state.travelPeriods, createTravelPeriod] });
+                const createdTravelPeriod = TravelPeriod.from(response.data);
+                this.setState({ travelPeriods: [...this.state.travelPeriods, createdTravelPeriod] });
 
                 this.props.enqueueSnackbar('Created new travel period', {variant: 'success'});
-                return createTravelPeriod;
+                return createdTravelPeriod;
             }).catch(error => {
                 this.props.enqueueSnackbar('Failed to add new travel period. ' + error, {variant: 'error'});
                 throw error;

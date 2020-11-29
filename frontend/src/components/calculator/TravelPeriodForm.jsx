@@ -3,6 +3,7 @@ import CalculatorContext from "./context/CalculatorContext.tsx";
 import './TravelPeriodForm.css'
 import moment from "moment";
 import {Button, FormControl, InputLabel, Input, FormHelperText, Grid} from "@material-ui/core"
+import TravelPeriod from "../../common/TravelPeriod";
 
 
 const DEFAULT_STATE = {
@@ -87,13 +88,15 @@ class TravelPeriodFrom extends Component {
     saveNewPeriod(context, event) {
         event.preventDefault();
 
-        const newTravelPeriod = {
+        const newTravelPeriodJson = {
             start: this.toDate(this.state.startDate), 
             end: this.toDate(this.state.endDate), 
             country: this.state.country, 
             note: this.state.note
         }
-        
+
+        const newTravelPeriod = TravelPeriod.from(newTravelPeriodJson);
+
         if (this.validate(newTravelPeriod)) {
             context.addNewPeriod(newTravelPeriod)
                 .then(response => {
