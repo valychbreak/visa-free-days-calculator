@@ -87,7 +87,12 @@ class TravelPeriodFrom extends Component {
     saveNewPeriod(context, event) {
         event.preventDefault();
 
-        const newTravelPeriod = {start: this.toDate(this.state.startDate), end: this.toDate(this.state.endDate), country: this.state.country, note: this.state.note}
+        const newTravelPeriod = {
+            start: this.toDate(this.state.startDate), 
+            end: this.toDate(this.state.endDate), 
+            country: this.state.country, 
+            note: this.state.note
+        }
         
         if (this.validate(newTravelPeriod)) {
             context.addNewPeriod(newTravelPeriod)
@@ -112,6 +117,10 @@ class TravelPeriodFrom extends Component {
 
         if (!travelPeriod.end.isValid()) {
             fieldErrors.endDate = 'Date format should be dd-mm-yyyy';
+        }
+
+        if (travelPeriod.end.isBefore(travelPeriod.start)) {
+            fieldErrors.endDate = 'Should be BEFORE start date'
         }
 
         if (this.isBlank(travelPeriod.country)) {
