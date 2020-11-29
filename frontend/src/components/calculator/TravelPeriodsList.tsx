@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Moment from 'react-moment';
+import moment from "moment";
 import { TableContainer, Table, TableRow, TableCell, TableHead, TableBody, IconButton, Typography } from '@material-ui/core';
 import { Delete } from '@material-ui/icons'
 import TravelPeriod from '../../common/TravelPeriod';
@@ -37,6 +38,9 @@ class TraverlPeriodsList extends Component<TravelPeriodListProps> {
                             <TableRow key={index}>
                                 <TableCell>
                                     <Moment date={period.start} format="DD-MM-YYYY"/> - <Moment date={period.end} format="DD-MM-YYYY"/>
+                                    <Typography variant="caption" display="block" gutterBottom>
+                                        {period.duration} {period.duration !== 1 ? ('days') : ('day')}
+                                    </Typography>
                                 </TableCell>
                                 <TableCell>{period.country}</TableCell>
                                 <TableCell>{period.note}</TableCell>
