@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TravelPeriodFrom from './TravelPeriodForm';
 import CalculatorContextProvider from './context/CalendarContextProvider';
 import CalculatorContext from './context/CalculatorContext';
-import TraverlPeriodsList from './TravelPeriodsList';
+import TravelPeriodsList from './TravelPeriodsList';
 import { Box, Paper, WithStyles, withStyles } from '@material-ui/core';
 
 const useStyles = () => ({
@@ -35,7 +35,7 @@ class VisaFreeDateCalculator extends Component<WithStyles, {}> {
                         <Paper className={classes.paper}>
                             <CalculatorContext.Consumer>
                                 {context => (
-                                    <TraverlPeriodsList travelPeriods={context.travelPeriods} onTravelPeriodDelete={context.deleteTravelPeriod} />
+                                    <TravelPeriodsList travelPeriods={context.travelPeriods} onTravelPeriodDelete={context.deleteTravelPeriod} />
                                 )}
                             </CalculatorContext.Consumer>
                         </Paper>

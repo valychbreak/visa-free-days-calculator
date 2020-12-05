@@ -9,7 +9,7 @@ type TravelPeriodListProps = {
     onTravelPeriodDelete(travelPeriod: TravelPeriod): void;
 }
 
-class TraverlPeriodsList extends Component<TravelPeriodListProps> {
+class TravelPeriodsList extends Component<TravelPeriodListProps> {
 
     render() {
         if (this.props.travelPeriods.length === 0) {
@@ -55,4 +55,4 @@ class TraverlPeriodsList extends Component<TravelPeriodListProps> {
     }
 }
 
-export default TraverlPeriodsList;
+export default TravelPeriodsList;
