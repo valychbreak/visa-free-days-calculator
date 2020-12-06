@@ -19,7 +19,7 @@ class LoginPage extends Component<RouteComponentProps & WithStyles & WithSnackba
                     <Paper className={classes.paper}>
                         <Typography variant="h4">You are not authorized.</Typography>
                         <Typography>Click button below to try with temporary user.</Typography>
-                        <Button color='primary' variant="contained" 
+                        <Button color='primary' variant="contained" data-test-id="try-now-btn"
                                 onClick={e => this.authorizeWithTempUser(context)}
                         >
                             Try now!

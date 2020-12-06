@@ -74,7 +74,7 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
 
     loginButton() {
         return (
-            <Button color="inherit" size="large" startIcon={<ExitToApp />} onClick={e => this.props.history.push('/login')}>
+            <Button color="inherit" size="large" data-test-id="login-btn" startIcon={<ExitToApp />} onClick={e => this.props.history.push('/login')}>
                 Login
             </Button>
         )
