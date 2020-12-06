@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import TravelPeriodsList from './TravelPeriodsList';
 import TravelPeriod from '../../common/TravelPeriod';
 import moment from 'moment';
-import each from '@testing-library/jest-dom'
  
  
 describe('TravelPeriodsList', () => {
