@@ -19,4 +19,4 @@ jobs:
       - name: Installing modules
         run: npm install
       - name: Run tests
-        run: npm ci:test
+        run: npm run ci:test
