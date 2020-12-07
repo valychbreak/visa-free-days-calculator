@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: '13'
       - name: Installing modules
+        working-directory: ./frontend
         run: npm install
       - name: Run tests
+        working-directory: ./frontend
         run: npm run ci:test
