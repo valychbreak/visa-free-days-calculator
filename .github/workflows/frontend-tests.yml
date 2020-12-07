@@ -19,4 +19,4 @@ jobs:
       - name: Installing modules
         run: npm install
       - name: Run tests
-        run: ./node_modules/react-scripts/bin/react-scripts.js test --watchAll
+        run: npm ci:test
