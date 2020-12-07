@@ -47,7 +47,7 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
         return (
             <AppBar position="fixed">
                 <Toolbar>
-                    <IconButton onClick={() => this.toggleDrawer()}>
+                    <IconButton data-test-id="drawer-btn" onClick={() => this.toggleDrawer()}>
                         <MenuIcon fontSize="large" />
                     </IconButton>
                     <Typography className={classes.title} variant="h5" color="inherit">Visa calculator</Typography>
@@ -66,7 +66,7 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
 
     profileButton() {
         return (
-            <Button color="inherit" size="large" startIcon={<AccountCircle />} onClick={e => this.props.history.push('/profile')}>
+            <Button color="inherit" size="large" data-test-id="profile-btn" startIcon={<AccountCircle />} onClick={e => this.props.history.push('/profile')}>
                 Profile
             </Button>
         )
@@ -89,11 +89,11 @@ class Header extends Component<WithStyles & RouteComponentProps, HeaderState> {
                         <ListItemText><Typography variant="h6">Menu</Typography></ListItemText>
                     </ListItem>
                     <Divider />
-                    <ListItem button component={Link} to="/" onClick={() => this.toggleDrawer(false)}>
+                    <ListItem button component={Link} to="/" data-test-id="drawer-home-btn" onClick={() => this.toggleDrawer(false)}>
                         <ListItemIcon><Home /></ListItemIcon>
                         <ListItemText>Home</ListItemText>
                     </ListItem>
-                    <ListItem button component={Link} to="/calculator" onClick={() => this.toggleDrawer(false)}>
+                    <ListItem button component={Link} to="/calculator" data-test-id="drawer-calculator-btn" onClick={() => this.toggleDrawer(false)}>
                         <ListItemIcon><Flight /></ListItemIcon>
                         <ListItemText>Calculator</ListItemText>
                     </ListItem>
