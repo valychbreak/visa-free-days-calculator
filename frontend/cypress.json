@@ -2,5 +2,6 @@
   "baseUrl": "http://localhost:3000",
   "integrationFolder": "tests/e2e/cypress/integration",
   "screenshotsFolder": "tests/e2e/cypress/screenshots",
-  "supportFile": "tests/e2e/cypress/support/index.js"
+  "supportFile": "tests/e2e/cypress/support/index.js",
+  "testFiles": "**/*.spec.*"
 }
