@@ -1,8 +1,10 @@
 /// <reference types="cypress" />
 
+const { Link } = require("../links");
+
 describe("first e2e test", () => {
     beforeEach(() => {
-        cy.visit("/");
+        cy.visit(Link.HOME);
     })
     it("should authorize with 'try now' feature", () => {
         
