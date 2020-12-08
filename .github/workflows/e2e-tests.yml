@@ -63,3 +63,4 @@ jobs:
           start: npm start
           wait-on: 'http://localhost:8080/health, http://localhost:3000'
           config: baseUrl=http://localhost:3000
+          env: NODE_ENV=test
