@@ -55,14 +55,11 @@ jobs:
           jdbc_username: postgres
           jdbc_password: postgres
 
-      - name: Run frontend app
-        working-directory: ./frontend
-        run: npm start &
-
       - name: Run E2E tests
         uses: cypress-io/github-action@v2
         with:
           # wait for all services to respond
+          working-directory: ./frontend
+          start: npm start
           wait-on: 'http://localhost:8080/health, http://localhost:3000'
           config: baseUrl=http://localhost:3000
-          working-directory: ./frontend
