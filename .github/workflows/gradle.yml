@@ -27,6 +27,7 @@ jobs:
     - name: Build with Gradle & Run tests
       run: ./gradlew :backend:build
     - name: Upload test results
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: test-report
