@@ -48,11 +48,20 @@ jobs:
         working-directory: ./backend
         run: ../gradlew flywayClean flywayMigrate -Dflyway.user=postgres -Dflyway.password=postgres -Dflyway.url=jdbc:postgresql://localhost:5432/postgres
 
-      - name: Run app
+      - name: Run backend app
         run: backend/entrypoint.sh backend/build/libs/backend-0.1-all.jar &
         env:
           jdbc_url: jdbc:postgresql://localhost:5432/postgres
           jdbc_username: postgres
           jdbc_password: postgres
 
-      - run: curl http://localhost:8080
+      - name: Run frontend app
+        working-directory: ./frontend
+        run: npm start &
+
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v2
+        with:
+          # wait for all services to respond
+          wait-on: 'http://localhost:8080, http://localhost:3000'
+          config: baseUrl=http://localhost:3000
