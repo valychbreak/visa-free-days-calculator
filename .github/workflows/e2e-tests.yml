@@ -63,6 +63,6 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           # wait for all services to respond
-          wait-on: 'http://localhost:8080, http://localhost:3000'
+          wait-on: 'http://localhost:8080/health, http://localhost:3000'
           config: baseUrl=http://localhost:3000
           working-directory: ./frontend
