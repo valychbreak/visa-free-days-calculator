@@ -57,10 +57,10 @@ jobs:
 
       - name: Run E2E tests
         uses: cypress-io/github-action@v2
+        env: NODE_ENV=test
         with:
           # wait for all services to respond
           working-directory: ./frontend
           start: npm start
           wait-on: 'http://localhost:8080/health, http://localhost:3000'
           config: baseUrl=http://localhost:3000
-          env: NODE_ENV=test
