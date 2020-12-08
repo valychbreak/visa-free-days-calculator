@@ -60,9 +60,9 @@ jobs:
         run: npm start &
 
       - name: Run E2E tests
-        working-directory: ./frontend
         uses: cypress-io/github-action@v2
         with:
           # wait for all services to respond
           wait-on: 'http://localhost:8080, http://localhost:3000'
           config: baseUrl=http://localhost:3000
+          working-directory: ./frontend
