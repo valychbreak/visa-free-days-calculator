@@ -63,7 +63,7 @@ jobs:
         with:
           # wait for all services to respond
           working-directory: ./frontend
-          start: npm run ci:start
+          start: REACT_APP_API_URL=http://localhost:8080 && npm run ci:start
           wait-on: 'http://localhost:8080/health, http://localhost:3000'
           config: baseUrl=http://localhost:3000
 
