@@ -1,9 +1,9 @@
 datasources:
   default:
-    url: jdbc:postgresql://visa-calculator-db.cyypztgnlyqp.eu-central-1.rds.amazonaws.com:5432/visa-calculator-db-dev
+    url: jdbc:postgresql://localhost:5432/postgres
     driverClassName: org.postgresql.Driver
-    username: visa_calculator_owner_dev
-    password: visa_calculator_owner_dev
+    username: postgres
+    password: postgres
     maximumPoolSize: 10
     maxActive: 10
 
