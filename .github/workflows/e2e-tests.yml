@@ -58,7 +58,7 @@ jobs:
         run: ../gradlew flywayClean flywayMigrate -Dflyway.user=postgres -Dflyway.password=postgres -Dflyway.url=jdbc:postgresql://localhost:5432/postgres
 
       - name: Run backend app
-        run: backend/entrypoint.sh backend/build/libs/backend-0.1-all.jar &
+        run: java -Dmicronaut.environments=ci -Ddatasources.default.url=${jdbc_url} -Ddatasources.default.username=${jdbc_username} -Ddatasources.default.password=${jdbc_password} "-Dcom.sun.management.jmxremote" "-Xmx128m" -jar "backend/build/libs/backend-0.1-all.jar" &
         env:
           jdbc_url: jdbc:postgresql://localhost:5432/postgres
           jdbc_username: postgres
