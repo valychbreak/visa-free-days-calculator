@@ -1,5 +1,9 @@
 name: PostgreSQL Service Example
-on: push
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   # Label of the runner job
