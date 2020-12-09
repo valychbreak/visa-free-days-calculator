@@ -46,7 +46,7 @@ jobs:
         run: npm install
       - name: Run tests
         working-directory: ./frontend
-        run: npm start
+        run: npm start &
         env:
           REACT_APP_API_URL: http://localhost:8080
 
