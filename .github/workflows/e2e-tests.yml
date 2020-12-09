@@ -27,11 +27,9 @@ jobs:
           - 5432:5432
 
     steps:
-      # Downloads a copy of the code in your repository before running CI tests
-      - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 12
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 11
