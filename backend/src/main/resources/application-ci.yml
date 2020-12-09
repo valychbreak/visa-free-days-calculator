@@ -1,0 +1,63 @@
+datasources:
+  default:
+    url: jdbc:postgresql://visa-calculator-db.cyypztgnlyqp.eu-central-1.rds.amazonaws.com:5432/visa-calculator-db-dev
+    driverClassName: org.postgresql.Driver
+    username: visa_calculator_owner_dev
+    password: visa_calculator_owner_dev
+    maximumPoolSize: 10
+    maxActive: 10
+
+jpa:
+  default:
+    entity-scan:
+      packages: 'com.valychbreak.calculator'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: false
+
+micronaut:
+  application:
+    name: backend
+
+  server:
+    port: 8080
+    cors:
+      enabled: true
+
+  # Static resource in src/main/resources/public
+  router:
+    static-resources:
+      default:
+        enabled: false
+        mapping: "/**"
+        paths: "classpath:public"
+
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+        path: /api/login
+      oauth:
+        enabled: true
+    intercept-url-map:
+      - pattern: /**
+        http-method: GET
+        access:
+          - isAnonymous()
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
+              base64: true
+              jws-algorithm: HS256
+
+endpoints:
+  health:
+    jdbc:
+      enabled: false
